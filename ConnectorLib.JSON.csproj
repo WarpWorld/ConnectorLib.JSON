@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <RootNamespace>ConnectorLib.JSON</RootNamespace>
+    <AssemblyName>ConnectorLib.JSON</AssemblyName>
+    <PlatformTarget>x64</PlatformTarget>
+    <SelfContained>true</SelfContained>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Build>$([System.DateTime]::op_Subtraction($([System.DateTime]::get_Now().get_Date()),$([System.DateTime]::new(2000,1,1))).get_TotalDays())</Build>
+    <Revision>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</Revision>
+    <Version Condition="'$(DesignTimeBuild)' != 'true' OR '$(BuildingProject)' == 'true'">5.0.$(Build).$(Revision)</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Certificates\WarpWorld_Code.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Company>Warp World, Inc.</Company>
+    <Copyright>© 2024 Warp World, Inc.</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto conf_done&#xD;&#xA;set CONFUSER=$(SolutionDir)Tools\ConfuserEx\Confuser.CLI.exe&#xD;&#xA;if exist &quot;%25CONFUSER%25&quot; goto conf_ok&#xD;&#xA;    echo ConfuserEx is missing.&#xD;&#xA;    exit -1&#xD;&#xA;:conf_ok&#xD;&#xA;&quot;%25CONFUSER%25&quot; -n &quot;$(TargetDir)Confuser.crproj&quot;&#xD;&#xA;del /q &quot;$(TargetDir)Confuser.crproj&quot;&#xD;&#xA;:conf_done&#xD;&#xA;&#xD;&#xA;if &quot;%25SIGNTOOL%25&quot;==&quot;&quot; set SIGNTOOL=$(SolutionDir)\Tools\signtool.exe&#xD;&#xA;if exist &quot;%25SIGNTOOL%25&quot; goto sign_ok&#xD;&#xA;    echo SignTool is missing. Please install the Windows 10 App Certification Kit.&#xD;&#xA;    exit -1&#xD;&#xA;:sign_ok&#xD;&#xA;&quot;%25SIGNTOOL%25&quot; sign /f &quot;$(SolutionDir)Certificates\WarpWorld_Code.pfx&quot; /fd SHA256 /p $(WW_CERTPASS) /t http://timestamp.digicert.com $(TargetPath)&#xD;&#xA;&#xD;&#xA;rd /s /q &quot;$(TargetDir)cs&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)de&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)es&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)fr&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)it&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)ja&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)ko&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)pl&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)pt-BR&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)ru&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)tr&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)zh-Hans&quot;&#xD;&#xA;rd /s /q &quot;$(TargetDir)zh-Hant&quot;&#xD;&#xA;if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto clean_done&#xD;&#xA;del /q &quot;$(TargetDir)*.pdb&quot;&#xD;&#xA;:clean_done" />
+  </Target>
+
+</Project>
