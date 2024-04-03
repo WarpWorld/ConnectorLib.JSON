@@ -7,11 +7,21 @@ public abstract class SimpleJSONMessage
     /// <summary>
     /// The JSON serializer settings required by the Crowd Control SimpleJSON protocol.
     /// </summary>
-    public static readonly JsonSerializer JSON_SERIALIZER = new()
+    public static readonly JsonSerializerSettings JSON_SERIALIZER_SETTINGS = new()
     {
         NullValueHandling = NullValueHandling.Ignore,
         MissingMemberHandling = MissingMemberHandling.Ignore,
         Formatting = Formatting.None
+    };
+
+    /// <summary>
+    /// The JSON serializer settings required by the Crowd Control SimpleJSON protocol.
+    /// </summary>
+    public static readonly JsonSerializer JSON_SERIALIZER = new()
+    {
+        NullValueHandling = JSON_SERIALIZER_SETTINGS.NullValueHandling,
+        MissingMemberHandling = JSON_SERIALIZER_SETTINGS.MissingMemberHandling,
+        Formatting = JSON_SERIALIZER_SETTINGS.Formatting
     };
 
     private static int _next_id = 0;
