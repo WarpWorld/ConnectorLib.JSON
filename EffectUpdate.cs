@@ -16,7 +16,7 @@ public class EffectUpdate : SimpleJSONResponse
     public string? code;
 
     /// <summary>
-    /// The ID of the effect to which this report pertains.
+    /// The IDs of the effects, groups, or categories to which this report pertains.
     /// </summary>
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public string[]? ids;
