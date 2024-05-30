@@ -1,15 +1,19 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿#if NETSTANDARD1_3_OR_GREATER
+using System;
+#endif
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
+#if NETSTANDARD1_3_OR_GREATER
 [Serializable]
+#endif
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public class SimpleJSONResponse : SimpleJSONMessage
 {
-
     /// <inheritdoc cref="SimpleJSONMessage.ID"/>
     /// <remarks>
     /// If the message is a response to an effect request or a followup on same, this should match the ID of the originating request.

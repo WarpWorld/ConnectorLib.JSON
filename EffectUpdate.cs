@@ -1,9 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
+#if NETSTANDARD1_3_OR_GREATER
 [Serializable]
+#endif
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public class EffectUpdate : SimpleJSONResponse
 {
@@ -36,4 +39,15 @@ public class EffectUpdate : SimpleJSONResponse
     public EffectStatus status;
 
     public string? message;
+
+    public EffectUpdate() { }
+
+    public EffectUpdate(string code, EffectStatus status, string? message = null)
+    {
+        ids = [code];
+        idType = IdentifierType.Effect;
+        this.status = status;
+        this.message = message;
+        type = ResponseType.EffectStatus;
+    }
 }

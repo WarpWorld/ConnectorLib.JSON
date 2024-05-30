@@ -1,15 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿#if NETSTANDARD1_3_OR_GREATER
+using System;
+#endif
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json.Linq;
 
 namespace ConnectorLib.JSON;
 
+#if NETSTANDARD1_3_OR_GREATER
 [Serializable]
+#endif
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public class EffectRequest : SimpleJSONRequest
 {
     public string? code;
     public string? message;
-    public object? parameters;
+    public JToken? parameters;
     public uint? quantity;
     //public Target?[]? targets;
     public JArray? targets;
@@ -20,7 +25,9 @@ public class EffectRequest : SimpleJSONRequest
 
     public EffectRequest() => type = RequestType.Start;
 
+#if NETSTANDARD1_3_OR_GREATER
     [Serializable]
+#endif
     public class Target
     {
         public string? service;
