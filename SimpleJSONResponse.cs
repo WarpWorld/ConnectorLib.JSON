@@ -37,6 +37,8 @@ public class SimpleJSONResponse : SimpleJSONMessage
 
     [JsonIgnore] public override bool IsKeepAlive => type == ResponseType.KeepAlive;
 
+    [JsonIgnore] public static SimpleJSONResponse KeepAlive { get; } = new EmptyResponse { type = ResponseType.KeepAlive };
+
     /// <summary>
     /// Parses a response object from a serialized string.
     /// </summary>
