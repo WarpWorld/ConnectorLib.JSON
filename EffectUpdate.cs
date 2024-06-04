@@ -29,6 +29,8 @@ public class EffectUpdate : SimpleJSONResponse
     /// </summary>
     public IdentifierType idType;
 
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [JsonConverter(typeof(CamelCaseStringEnumConverter))]
     public enum IdentifierType
     {
         Effect = 0,

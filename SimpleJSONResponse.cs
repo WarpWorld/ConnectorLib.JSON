@@ -66,6 +66,8 @@ public class SimpleJSONResponse : SimpleJSONMessage
                 return j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
             case ResponseType.LoginSuccess:
                 return j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+            case ResponseType.GameUpdate:
+                return j.ToObject<GameUpdate>(JSON_SERIALIZER)!;
             case ResponseType.Disconnect:
                 return j.ToObject<MessageResponse>(JSON_SERIALIZER)!;
             case ResponseType.KeepAlive:

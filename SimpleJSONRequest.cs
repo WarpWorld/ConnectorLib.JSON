@@ -45,6 +45,8 @@ public class SimpleJSONRequest : SimpleJSONMessage
                 return j.ToObject<PlayerInfo>(JSON_SERIALIZER)!;
             case RequestType.Login:
                 return j.ToObject<MessageRequest>(JSON_SERIALIZER)!;
+            case RequestType.GameUpdate:
+                return j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
             case RequestType.KeepAlive:
                 return j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
             default:

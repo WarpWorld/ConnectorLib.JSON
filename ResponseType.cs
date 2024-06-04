@@ -1,4 +1,7 @@
-﻿namespace ConnectorLib.JSON;
+﻿using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
+
+namespace ConnectorLib.JSON;
 
 /// <summary>
 /// The type of the message.
@@ -8,6 +11,8 @@
 /// The name <see cref="ResponseType"/> is misleading and should not be taken as an
 /// indication that all of these message types are necessarily responses to messages.
 /// </remarks>
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[JsonConverter(typeof(CamelCaseStringEnumConverter))]
 public enum ResponseType : byte
 {
     /// <summary>
@@ -24,6 +29,7 @@ public enum ResponseType : byte
 
     Login = 0xF0,
     LoginSuccess = 0xF1,
+    GameUpdate = 0xFD,
     Disconnect = 0xFE,
     KeepAlive = 0xFF
 }

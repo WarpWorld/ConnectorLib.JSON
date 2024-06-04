@@ -1,8 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ConnectorLib.JSON;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
+[JsonConverter(typeof(CamelCaseStringEnumConverter))]
 public enum EffectStatus
 {
     //== Effect Instance Messages

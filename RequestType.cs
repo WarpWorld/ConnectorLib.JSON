@@ -1,8 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ConnectorLib.JSON;
 
-[SuppressMessage("ReSharper", "UnusedMember.Local")]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+[JsonConverter(typeof(CamelCaseStringEnumConverter))]
 public enum RequestType : byte
 {
     Test = 0x00,
@@ -15,5 +17,6 @@ public enum RequestType : byte
 
     PlayerInfo = 0xE0,
     Login = 0xF0,
+    GameUpdate = 0xFD,
     KeepAlive = 0xFF
 }
