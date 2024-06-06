@@ -52,7 +52,8 @@ public class SimpleJSONResponse : SimpleJSONMessage
     /// <param name="json">The JSON string containing the response message.</param>
     public static SimpleJSONResponse Parse(JObject j)
     {
-        switch (((((ResponseType)(j.Value<byte>("type"))))))
+        ResponseType type = (ResponseType)CamelCaseStringEnumConverter.ReadJToken(j.GetValue("type"), typeof(ResponseType));
+        switch (type)
         {
             case ResponseType.EffectRequest:
                 return j.ToObject<EffectResponse>(JSON_SERIALIZER)!;

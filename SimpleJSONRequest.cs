@@ -32,7 +32,8 @@ public class SimpleJSONRequest : SimpleJSONMessage
     public static SimpleJSONRequest Parse(string json) => Parse(JObject.Parse(json));
     public static SimpleJSONRequest Parse(JObject j)
     {
-        switch (((((RequestType)(j.Value<byte>("type"))))))
+        RequestType type = (RequestType)CamelCaseStringEnumConverter.ReadJToken(j.GetValue("type"), typeof(RequestType));
+        switch (type)
         {
             case RequestType.Test:
             case RequestType.Start:
