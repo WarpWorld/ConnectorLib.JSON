@@ -49,10 +49,11 @@ public class SimpleJSONResponse : SimpleJSONMessage
     /// <summary>
     /// Parses a response object from a serialized string.
     /// </summary>
-    /// <param name="json">The JSON string containing the response message.</param>
+    /// <param name="j">The JSON object containing the response message.</param>
     public static SimpleJSONResponse Parse(JObject j)
     {
-        ResponseType type = (ResponseType)CamelCaseStringEnumConverter.ReadJToken(j.GetValue("type"), typeof(ResponseType));
+        JToken? typeToken = j.GetValue("type") ?? JToken.FromObject((ResponseType)0);
+        ResponseType type = (ResponseType)CamelCaseStringEnumConverter.ReadJToken(typeToken, typeof(ResponseType));
         switch (type)
         {
             case ResponseType.EffectRequest:

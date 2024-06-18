@@ -30,9 +30,16 @@ public class SimpleJSONRequest : SimpleJSONMessage
     /// <param name="json">The JSON string containing the response message.</param>
     /// <returns>A <see cref="SimpleJSONRequest"/> object corresponding to the supplied JSON.</returns>
     public static SimpleJSONRequest Parse(string json) => Parse(JObject.Parse(json));
+
+    /// <summary>
+    /// Parses a response object from a serialized string.
+    /// </summary>
+    /// <param name="j">The JSON object containing the response message.</param>
+    /// <returns>A <see cref="SimpleJSONRequest"/> object corresponding to the supplied JSON.</returns>
     public static SimpleJSONRequest Parse(JObject j)
     {
-        RequestType type = (RequestType)CamelCaseStringEnumConverter.ReadJToken(j.GetValue("type"), typeof(RequestType));
+        JToken? typeToken = j.GetValue("type") ?? JToken.FromObject((RequestType)0);
+        RequestType type = (RequestType)CamelCaseStringEnumConverter.ReadJToken(typeToken, typeof(RequestType));
         switch (type)
         {
             case RequestType.Test:
