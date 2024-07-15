@@ -23,4 +23,5 @@ public enum GameState
     BadPlayerState = -9,
     Menu = -10,
     Map = -11,
+    PipelineBusy = -12
 }
