@@ -54,4 +54,6 @@ public abstract class SimpleJSONMessage
     /// True if this message is a keepalive/heartbeat, otherwise false.
     /// </summary>
     public abstract bool IsKeepAlive { get; }
+
+    public string Serialize() => JsonConvert.SerializeObject(this, JSON_SERIALIZER_SETTINGS);
 }

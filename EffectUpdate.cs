@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
@@ -47,6 +49,24 @@ public class EffectUpdate : SimpleJSONResponse
     public EffectUpdate(string code, EffectStatus status, string? message = null)
     {
         ids = [code];
+        idType = IdentifierType.Effect;
+        this.status = status;
+        this.message = message;
+        type = ResponseType.EffectStatus;
+    }
+
+    public EffectUpdate(string[] ids, EffectStatus status, string? message = null)
+    {
+        this.ids = ids.ToArray();
+        idType = IdentifierType.Effect;
+        this.status = status;
+        this.message = message;
+        type = ResponseType.EffectStatus;
+    }
+
+    public EffectUpdate(IEnumerable<string> ids, EffectStatus status, string? message = null)
+    {
+        this.ids = ids.ToArray();
         idType = IdentifierType.Effect;
         this.status = status;
         this.message = message;
