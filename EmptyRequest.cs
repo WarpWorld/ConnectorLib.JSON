@@ -7,4 +7,4 @@ namespace ConnectorLib.JSON;
 #if NETSTANDARD1_3_OR_GREATER
 [Serializable]
 #endif
-public class EmptyRequest : SimpleJSONRequest { }
+public class EmptyRequest : SimpleJSONRequest;

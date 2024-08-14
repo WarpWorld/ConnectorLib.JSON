@@ -25,7 +25,7 @@ public class RequestParameters :
     private RequestParameters()
     {
         _parameters = new();
-        _parameter_list = [];
+        _parameter_list = new();
     }
 
     public RequestParameters(IEnumerable<IParameterValue> list)
@@ -131,7 +131,7 @@ public class RequestParameters :
                 }
              */
             JObject j = JObject.Load(reader);
-            List<IParameterValue> values = [];
+            List<IParameterValue> values = new();
             foreach (var kv in j)
             {
                 string id = kv.Key;

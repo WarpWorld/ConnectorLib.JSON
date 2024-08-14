@@ -49,7 +49,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="*"/>
+    <!--<Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>C:\Users\KatDevsGames\source\repos\hk-modding\Newtonsoft.Json.dll</HintPath>
+    </Reference>-->
   </ItemGroup>
 
   <PropertyGroup>

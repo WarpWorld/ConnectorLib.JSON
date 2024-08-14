@@ -6,4 +6,4 @@ namespace ConnectorLib.JSON;
 #if NETSTANDARD1_3_OR_GREATER
 [Serializable]
 #endif
-public class EmptyResponse : SimpleJSONResponse { }
+public class EmptyResponse : SimpleJSONResponse;
