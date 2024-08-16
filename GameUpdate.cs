@@ -1,6 +1,7 @@
-﻿using System;
+﻿#if NETSTANDARD1_3_OR_GREATER
+using System;
+#endif
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 

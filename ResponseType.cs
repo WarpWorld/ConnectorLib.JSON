@@ -25,6 +25,8 @@ public enum ResponseType : byte
     LoadEvent = 0x18,
     SaveEvent = 0x19,
 
+    DataResponse = 0x20,
+
     RpcRequest = 0xD0,
 
     Login = 0xF0,

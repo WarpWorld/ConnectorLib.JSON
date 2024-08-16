@@ -23,7 +23,7 @@ public class EffectRequest : SimpleJSONRequest
     public JArray? viewers;
     public int? cost;
 
-    public EffectRequest() => type = RequestType.Start;
+    public EffectRequest() => type = RequestType.EffectStart;
 
 #if NETSTANDARD1_3_OR_GREATER
     [Serializable]

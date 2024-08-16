@@ -28,37 +28,62 @@ public class SimpleJSONRequest : SimpleJSONMessage
     /// Parses a response object from a serialized string.
     /// </summary>
     /// <param name="json">The JSON string containing the response message.</param>
-    /// <returns>A <see cref="SimpleJSONRequest"/> object corresponding to the supplied JSON.</returns>
-    public static SimpleJSONRequest Parse(string json) => Parse(JObject.Parse(json));
+    /// <param name="request">A <see cref="SimpleJSONRequest"/> object corresponding to the supplied JSON.</param>
+    /// <returns>True if the operation succeeded, false otherwise.</returns>
+#if NETSTANDARD2_1_OR_GREATER
+    public static bool TryParse(string json, [MaybeNullWhen(false)] out SimpleJSONRequest request)
+#else
+    public static bool TryParse(string json, out SimpleJSONRequest? request)
+#endif
+        => TryParse(JObject.Parse(json), out request);
 
     /// <summary>
     /// Parses a response object from a serialized string.
     /// </summary>
     /// <param name="j">The JSON object containing the response message.</param>
-    /// <returns>A <see cref="SimpleJSONRequest"/> object corresponding to the supplied JSON.</returns>
-    public static SimpleJSONRequest Parse(JObject j)
+    /// <param name="request">A <see cref="SimpleJSONRequest"/> object corresponding to the supplied JSON.</param>
+    /// <returns>True if the operation succeeded, false otherwise.</returns>
+#if NETSTANDARD2_1_OR_GREATER
+    public static bool TryParse(JObject j, [MaybeNullWhen(false)] out SimpleJSONRequest request)
+#else
+    public static bool TryParse(JObject j, out SimpleJSONRequest? request)
+#endif
     {
-        JToken? typeToken = j.GetValue("type") ?? JToken.FromObject((RequestType)0);
+        JToken? typeToken = j.GetValue("type");
+        if (typeToken == null) goto fail;
         RequestType type = (RequestType)CamelCaseStringEnumConverter.ReadJToken(typeToken, typeof(RequestType));
         switch (type)
         {
-            case RequestType.Test:
-            case RequestType.Start:
-                return j.ToObject<EffectRequest>(JSON_SERIALIZER)!;
-            case RequestType.Stop:
-                return j.ToObject<EffectRequest>(JSON_SERIALIZER)!;
+            case RequestType.EffectTest:
+            case RequestType.EffectStart:
+                request = j.ToObject<EffectRequest>(JSON_SERIALIZER)!;
+                return true;
+            case RequestType.EffectStop:
+                request = j.ToObject<EffectRequest>(JSON_SERIALIZER)!;
+                return true;
+            case RequestType.DataRequest:
+                request = j.ToObject<DataRequest>(JSON_SERIALIZER)!;
+                return true;
             case RequestType.RpcResponse:
-                return j.ToObject<RpcResponse>(JSON_SERIALIZER)!;
+                request = j.ToObject<RpcResponse>(JSON_SERIALIZER)!;
+                return true;
             case RequestType.PlayerInfo:
-                return j.ToObject<PlayerInfo>(JSON_SERIALIZER)!;
+                request = j.ToObject<PlayerInfo>(JSON_SERIALIZER)!;
+                return true;
             case RequestType.Login:
-                return j.ToObject<MessageRequest>(JSON_SERIALIZER)!;
+                request = j.ToObject<MessageRequest>(JSON_SERIALIZER)!;
+                return true;
             case RequestType.GameUpdate:
-                return j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
+                request = j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
+                return true;
             case RequestType.KeepAlive:
-                return j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
+                request = j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
+                return true;
             default:
-                throw new SerializationException("Message type was missing or unknown.");
+                goto fail;
         }
+        fail:
+        request = null;
+        return false;
     }
 }

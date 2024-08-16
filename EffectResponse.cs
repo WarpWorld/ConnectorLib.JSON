@@ -28,11 +28,11 @@ public class EffectResponse : SimpleJSONResponse
     public long timeRemaining; //milliseconds
 
     [JsonConverter(typeof(MetadataConverter))]
-    public Dictionary<string, EffectResponseMetadata>? metadata;
+    public Dictionary<string, DataResponse>? metadata;
 
-    private class MetadataConverter : JsonConverter<Dictionary<string, EffectResponseMetadata>?>
+    private class MetadataConverter : JsonConverter<Dictionary<string, DataResponse>?>
     {
-        public override void WriteJson(JsonWriter writer, Dictionary<string, EffectResponseMetadata>? value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, Dictionary<string, DataResponse>? value, JsonSerializer serializer)
         {
             if (value == null)
             {
@@ -49,16 +49,16 @@ public class EffectResponse : SimpleJSONResponse
             serializer.Serialize(writer, result);
         }
 
-        public override Dictionary<string, EffectResponseMetadata>? ReadJson(JsonReader reader, Type objectType, Dictionary<string, EffectResponseMetadata>? existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override Dictionary<string, DataResponse>? ReadJson(JsonReader reader, Type objectType, Dictionary<string, DataResponse>? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             JObject? jObject = (JObject?)serializer.Deserialize(reader);
             if (jObject == null) return null;
-            Dictionary<string, EffectResponseMetadata> result = new();
+            Dictionary<string, DataResponse> result = new();
             foreach (JProperty property in jObject.Properties())
             {
                 JObject pValue = ((JObject)property.Value);
                 pValue["key"] = property.Name;
-                result.Add(property.Name, pValue.ToObject<EffectResponseMetadata>());
+                result.Add(property.Name, pValue.ToObject<DataResponse>());
             }
             return result;
         }

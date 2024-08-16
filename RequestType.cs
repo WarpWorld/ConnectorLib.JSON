@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 //using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
@@ -15,11 +16,19 @@ namespace ConnectorLib.JSON;
 //[JsonConverter(typeof(CamelCaseStringEnumConverter))]
 public enum RequestType : byte
 {
-    Test = 0x00,
-    Start = 0x01,
-    Stop = 0x02,
+    [Obsolete($"Use {nameof(EffectTest)} instead.")]
+    Test = EffectTest,
+    EffectTest = 0x00,
+    [Obsolete($"Use {nameof(EffectStart)} instead.")]
+    Start = EffectStart,
+    EffectStart = 0x01,
+    [Obsolete($"Use {nameof(EffectStop)} instead.")]
+    Stop = EffectStop,
+    EffectStop = 0x02,
 
     GenericEvent = 0x10,
+
+    DataRequest = 0x20,
 
     RpcResponse = 0xD0,
 

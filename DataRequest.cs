@@ -2,7 +2,6 @@
 using System;
 #endif
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json.Linq;
 
 namespace ConnectorLib.JSON;
 
@@ -10,8 +9,13 @@ namespace ConnectorLib.JSON;
 [Serializable]
 #endif
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-public class PlayerInfo : SimpleJSONRequest
+public class DataRequest : SimpleJSONRequest
 {
-    public JObject? player; //todo fix this
-    public PlayerInfo() => type = RequestType.EffectStart;
+    public string key;
+
+    public DataRequest(string key)
+    {
+        this.key = key;
+        type = RequestType.DataRequest;
+    }
 }

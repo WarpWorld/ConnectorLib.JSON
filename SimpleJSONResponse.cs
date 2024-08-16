@@ -3,7 +3,6 @@ using System;
 #endif
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json.Linq;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
@@ -43,39 +42,67 @@ public class SimpleJSONResponse : SimpleJSONMessage
     /// Parses a response object from a serialized string.
     /// </summary>
     /// <param name="json">The JSON string containing the response message.</param>
-    /// <returns>A <see cref="SimpleJSONResponse"/> object corresponding to the supplied JSON.</returns>
-    public static SimpleJSONResponse Parse(string json) => Parse(JObject.Parse(json));
+    /// <param name="response">A <see cref="SimpleJSONResponse"/> object corresponding to the supplied JSON.</param>
+    /// <returns>True if the operation succeeded, false otherwise.</returns>
+#if NETSTANDARD2_1_OR_GREATER
+    public static bool TryParse(string json, [MaybeNullWhen(false)] out SimpleJSONResponse response)
+#else
+    public static bool TryParse(string json, out SimpleJSONResponse? response)
+#endif
+        => TryParse(JObject.Parse(json), out response);
 
     /// <summary>
     /// Parses a response object from a serialized string.
     /// </summary>
     /// <param name="j">The JSON object containing the response message.</param>
-    public static SimpleJSONResponse Parse(JObject j)
+    /// <param name="response">A <see cref="SimpleJSONResponse"/> object corresponding to the supplied JSON.</param>
+    /// <returns>True if the operation succeeded, false otherwise.</returns>
+#if NETSTANDARD2_1_OR_GREATER
+    public static bool TryParse(JObject j, [MaybeNullWhen(false)] out SimpleJSONResponse response)
+#else
+    public static bool TryParse(JObject j, out SimpleJSONResponse? response)
+#endif
     {
-        JToken? typeToken = j.GetValue("type") ?? JToken.FromObject((ResponseType)0);
+        JToken? typeToken = j.GetValue("type");
+        if (typeToken == null) goto fail;
         ResponseType type = (ResponseType)CamelCaseStringEnumConverter.ReadJToken(typeToken, typeof(ResponseType));
         switch (type)
         {
             case ResponseType.EffectRequest:
-                return j.ToObject<EffectResponse>(JSON_SERIALIZER)!;
+                response = j.ToObject<EffectResponse>(JSON_SERIALIZER)!;
+                return true;
             case ResponseType.EffectStatus:
-                return j.ToObject<EffectUpdate>(JSON_SERIALIZER)!;
+                response = j.ToObject<EffectUpdate>(JSON_SERIALIZER)!;
+                return true;
             case ResponseType.RpcRequest:
-                return j.ToObject<RpcRequest>(JSON_SERIALIZER)!;
+                response = j.ToObject<RpcRequest>(JSON_SERIALIZER)!;
+                return true;
             case ResponseType.GenericEvent:
-                return j.ToObject<GenericEvent>(JSON_SERIALIZER)!;
+                response = j.ToObject<GenericEvent>(JSON_SERIALIZER)!;
+                return true;
+            case ResponseType.DataResponse:
+                response = j.ToObject<DataResponse>(JSON_SERIALIZER)!;
+                return true;
             case ResponseType.Login:
-                return j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                return true;
             case ResponseType.LoginSuccess:
-                return j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                return true;
             case ResponseType.GameUpdate:
-                return j.ToObject<GameUpdate>(JSON_SERIALIZER)!;
+                response = j.ToObject<GameUpdate>(JSON_SERIALIZER)!;
+                return true;
             case ResponseType.Disconnect:
-                return j.ToObject<MessageResponse>(JSON_SERIALIZER)!;
+                response = j.ToObject<MessageResponse>(JSON_SERIALIZER)!;
+                return true;
             case ResponseType.KeepAlive:
-                return j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                return true;
             default:
-                throw new SerializationException("Message type was missing or unknown.");
+                goto fail;
         }
+        fail:
+        response = null;
+        return false;
     }
 }
