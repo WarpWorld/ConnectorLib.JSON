@@ -34,7 +34,7 @@ public class DataResponse : SimpleJSONResponse
     /// <remarks>
     /// This is milliseconds, not seconds.
     /// </remarks>
-    public long? timeRemaining;
+    public long timeRemaining; //milliseconds
 
     /// <summary>
     /// The message from the client (if any).

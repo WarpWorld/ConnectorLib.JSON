@@ -1,6 +1,7 @@
 ﻿#if NETSTANDARD1_3_OR_GREATER
 using System;
 #endif
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
@@ -49,39 +50,44 @@ public class SimpleJSONRequest : SimpleJSONMessage
     public static bool TryParse(JObject j, out SimpleJSONRequest? request)
 #endif
     {
-        JToken? typeToken = j.GetValue("type");
-        if (typeToken == null) goto fail;
-        RequestType type = (RequestType)CamelCaseStringEnumConverter.ReadJToken(typeToken, typeof(RequestType));
-        switch (type)
+        try
         {
-            case RequestType.EffectTest:
-            case RequestType.EffectStart:
-                request = j.ToObject<EffectRequest>(JSON_SERIALIZER)!;
-                return true;
-            case RequestType.EffectStop:
-                request = j.ToObject<EffectRequest>(JSON_SERIALIZER)!;
-                return true;
-            case RequestType.DataRequest:
-                request = j.ToObject<DataRequest>(JSON_SERIALIZER)!;
-                return true;
-            case RequestType.RpcResponse:
-                request = j.ToObject<RpcResponse>(JSON_SERIALIZER)!;
-                return true;
-            case RequestType.PlayerInfo:
-                request = j.ToObject<PlayerInfo>(JSON_SERIALIZER)!;
-                return true;
-            case RequestType.Login:
-                request = j.ToObject<MessageRequest>(JSON_SERIALIZER)!;
-                return true;
-            case RequestType.GameUpdate:
-                request = j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
-                return true;
-            case RequestType.KeepAlive:
-                request = j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
-                return true;
-            default:
-                goto fail;
+            JToken? typeToken = j.GetValue("type");
+            RequestType type;
+            if (typeToken != null) type = (RequestType)CamelCaseStringEnumConverter.ReadJToken(typeToken, typeof(RequestType));
+            else type = default;
+            switch (type)
+            {
+                case RequestType.EffectTest:
+                case RequestType.EffectStart:
+                    request = j.ToObject<EffectRequest>(JSON_SERIALIZER)!;
+                    return true;
+                case RequestType.EffectStop:
+                    request = j.ToObject<EffectRequest>(JSON_SERIALIZER)!;
+                    return true;
+                case RequestType.DataRequest:
+                    request = j.ToObject<DataRequest>(JSON_SERIALIZER)!;
+                    return true;
+                case RequestType.RpcResponse:
+                    request = j.ToObject<RpcResponse>(JSON_SERIALIZER)!;
+                    return true;
+                case RequestType.PlayerInfo:
+                    request = j.ToObject<PlayerInfo>(JSON_SERIALIZER)!;
+                    return true;
+                case RequestType.Login:
+                    request = j.ToObject<MessageRequest>(JSON_SERIALIZER)!;
+                    return true;
+                case RequestType.GameUpdate:
+                    request = j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
+                    return true;
+                case RequestType.KeepAlive:
+                    request = j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
+                    return true;
+                default:
+                    goto fail;
+            }
         }
+        catch { /**/ }
         fail:
         request = null;
         return false;

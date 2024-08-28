@@ -63,44 +63,50 @@ public class SimpleJSONResponse : SimpleJSONMessage
     public static bool TryParse(JObject j, out SimpleJSONResponse? response)
 #endif
     {
-        JToken? typeToken = j.GetValue("type");
-        if (typeToken == null) goto fail;
-        ResponseType type = (ResponseType)CamelCaseStringEnumConverter.ReadJToken(typeToken, typeof(ResponseType));
-        switch (type)
+        try
         {
-            case ResponseType.EffectRequest:
-                response = j.ToObject<EffectResponse>(JSON_SERIALIZER)!;
-                return true;
-            case ResponseType.EffectStatus:
-                response = j.ToObject<EffectUpdate>(JSON_SERIALIZER)!;
-                return true;
-            case ResponseType.RpcRequest:
-                response = j.ToObject<RpcRequest>(JSON_SERIALIZER)!;
-                return true;
-            case ResponseType.GenericEvent:
-                response = j.ToObject<GenericEvent>(JSON_SERIALIZER)!;
-                return true;
-            case ResponseType.DataResponse:
-                response = j.ToObject<DataResponse>(JSON_SERIALIZER)!;
-                return true;
-            case ResponseType.Login:
-                response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
-                return true;
-            case ResponseType.LoginSuccess:
-                response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
-                return true;
-            case ResponseType.GameUpdate:
-                response = j.ToObject<GameUpdate>(JSON_SERIALIZER)!;
-                return true;
-            case ResponseType.Disconnect:
-                response = j.ToObject<MessageResponse>(JSON_SERIALIZER)!;
-                return true;
-            case ResponseType.KeepAlive:
-                response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
-                return true;
-            default:
-                goto fail;
+
+            JToken? typeToken = j.GetValue("type");
+            ResponseType type;
+            if (typeToken != null) type = (ResponseType)CamelCaseStringEnumConverter.ReadJToken(typeToken, typeof(ResponseType));
+            else type = default;
+            switch (type)
+            {
+                case ResponseType.EffectRequest:
+                    response = j.ToObject<EffectResponse>(JSON_SERIALIZER)!;
+                    return true;
+                case ResponseType.EffectStatus:
+                    response = j.ToObject<EffectUpdate>(JSON_SERIALIZER)!;
+                    return true;
+                case ResponseType.RpcRequest:
+                    response = j.ToObject<RpcRequest>(JSON_SERIALIZER)!;
+                    return true;
+                case ResponseType.GenericEvent:
+                    response = j.ToObject<GenericEvent>(JSON_SERIALIZER)!;
+                    return true;
+                case ResponseType.DataResponse:
+                    response = j.ToObject<DataResponse>(JSON_SERIALIZER)!;
+                    return true;
+                case ResponseType.Login:
+                    response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                    return true;
+                case ResponseType.LoginSuccess:
+                    response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                    return true;
+                case ResponseType.GameUpdate:
+                    response = j.ToObject<GameUpdate>(JSON_SERIALIZER)!;
+                    return true;
+                case ResponseType.Disconnect:
+                    response = j.ToObject<MessageResponse>(JSON_SERIALIZER)!;
+                    return true;
+                case ResponseType.KeepAlive:
+                    response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                    return true;
+                default:
+                    goto fail;
+            }
         }
+        catch { /**/ }
         fail:
         response = null;
         return false;
