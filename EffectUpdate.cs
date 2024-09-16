@@ -16,7 +16,7 @@ public class EffectUpdate : SimpleJSONResponse
     /// If the message is about a class of effect (0x80 series), this should contain the effect safename.
     /// Otherwise, this field should be null or missing.
     /// </remarks>
-    [Obsolete]
+    [Obsolete($"This field is deprecated. Please use the {nameof(ids)} field instead.")]
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public string? code;
 
