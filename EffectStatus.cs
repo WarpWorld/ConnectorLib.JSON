@@ -26,6 +26,10 @@ public enum EffectStatus
     Resumed = 0x07,
     /// <summary>The timed effect has finished.</summary>
     Finished = 0x08,
+    /// <summary>The effect cannot be triggered right now. Wait for the specified time period for a followup response. Does not reschedule the request.</summary>
+    Wait = 0x09,
+    /// <summary>The effect is being managed by a remote scheduler. Wait indefinitely.</summary>
+    RemoteScheduled = 0xA0,
 
     //== Effect Class Messages
     /// <summary>The effect should be shown in the menu.</summary>

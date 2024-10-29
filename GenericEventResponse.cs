@@ -11,11 +11,11 @@ namespace ConnectorLib.JSON;
 [Serializable]
 #endif
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-public class GenericEvent : SimpleJSONResponse
+public class GenericEventResponse : SimpleJSONResponse
 {
     [JsonProperty(PropertyName = "internal")] public bool @internal;
     public string eventType;
-    public Dictionary<string, string> data;
+    public Dictionary<string, object> data;
 
-    public GenericEvent() => type = ResponseType.GenericEvent;
+    public GenericEventResponse() => type = ResponseType.GenericEvent;
 }

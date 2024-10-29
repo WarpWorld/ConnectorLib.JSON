@@ -82,7 +82,7 @@ public class SimpleJSONResponse : SimpleJSONMessage
                     response = j.ToObject<RpcRequest>(JSON_SERIALIZER)!;
                     return true;
                 case ResponseType.GenericEvent:
-                    response = j.ToObject<GenericEvent>(JSON_SERIALIZER)!;
+                    response = j.ToObject<GenericEventResponse>(JSON_SERIALIZER)!;
                     return true;
                 case ResponseType.DataResponse:
                     response = j.ToObject<DataResponse>(JSON_SERIALIZER)!;

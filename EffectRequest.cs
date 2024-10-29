@@ -1,7 +1,9 @@
 ﻿#if NETSTANDARD1_3_OR_GREATER
 using System;
 #endif
+using System;
 using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ConnectorLib.JSON;
@@ -21,7 +23,9 @@ public class EffectRequest : SimpleJSONRequest
     public long? duration; //milliseconds
     public string? viewer;
     public JArray? viewers;
-    public int? cost;
+    public long? cost;
+    public Guid? requestID;
+    public JObject? sourceDetails;
 
     public EffectRequest() => type = RequestType.EffectStart;
 
