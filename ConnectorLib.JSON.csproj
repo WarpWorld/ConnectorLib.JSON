@@ -49,7 +49,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="*"/>
+    <PackageReference Include="Newtonsoft.Json" Version="*" />
     <!--<Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>C:\Users\KatDevsGames\source\repos\hk-modding\Newtonsoft.Json.dll</HintPath>
     </Reference>-->
@@ -75,7 +75,7 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto clean_done&#xD;&#xA;del /q &quot;$(TargetDir)*.pdb&quot;&#xD;&#xA;:clean_done" />
+    <Exec Command="if &quot;%25SIGNTOOL%25&quot;==&quot;&quot; set SIGNTOOL=$(SolutionDir)\Tools\signtool.exe&#xD;&#xA;if exist &quot;%25SIGNTOOL%25&quot; goto sign_ok&#xD;&#xA;    echo SignTool is missing. Please install the Windows 10 App Certification Kit.&#xD;&#xA;    exit -1&#xD;&#xA;:sign_ok&#xD;&#xA;&quot;%25SIGNTOOL%25&quot; sign /f &quot;$(SolutionDir)Certificates\WarpWorld_Code.pfx&quot; /fd SHA256 /p $(WW_CERTPASS) /t http://timestamp.digicert.com $(TargetPath)&#xD;&#xA;&#xD;&#xA;if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto clean_done&#xD;&#xA;del /q &quot;$(TargetDir)*.pdb&quot;&#xD;&#xA;:clean_done" />
   </Target>
 
 </Project>
