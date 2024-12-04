@@ -69,6 +69,9 @@ public class EffectResponse : SimpleJSONResponse
     public EffectResponse(uint id, EffectStatus status, string? message = null)
         : this(id, status, 0, message) { }
 
+    public EffectResponse(uint id, EffectStatus status, TimeSpan timeRemaining, string? message = null)
+        : this(id, status, (long)timeRemaining.TotalMilliseconds, message) { }
+
     [JsonConstructor]
     public EffectResponse(uint id, EffectStatus status, long timeRemaining, string? message = null)
     {

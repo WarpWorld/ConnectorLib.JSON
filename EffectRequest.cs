@@ -25,7 +25,8 @@ public class EffectRequest : SimpleJSONRequest
     public JArray? viewers;
     public long? cost;
     public Guid? requestID;
-    public JObject? sourceDetails;
+    [JsonConverter(typeof(IEffectSourceDetails.Converter))]
+    public IEffectSourceDetails? sourceDetails;
 
     public EffectRequest() => type = RequestType.EffectStart;
 
