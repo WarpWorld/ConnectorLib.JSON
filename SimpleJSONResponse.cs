@@ -65,7 +65,6 @@ public class SimpleJSONResponse : SimpleJSONMessage
     {
         try
         {
-
             JToken? typeToken = j.GetValue("type");
             ResponseType type;
             if (typeToken != null) type = (ResponseType)CamelCaseStringEnumConverter.ReadJToken(typeToken, typeof(ResponseType));
