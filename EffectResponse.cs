@@ -23,9 +23,7 @@ public class EffectResponse : SimpleJSONResponse
     /// If applicable (messages 0x00 (sometimes) and 0x07 (always)), this should contain the time remaining on the running effect, in milliseconds.
     /// Otherwise, this field should be 0 or missing.
     /// </remarks>
-    /// <remarks>
-    /// This is milliseconds, not seconds.
-    /// </remarks>
+    /// <remarks>This is milliseconds, not seconds.</remarks>
     public long timeRemaining; //milliseconds
 
     [JsonConverter(typeof(MetadataConverter))]
@@ -66,12 +64,21 @@ public class EffectResponse : SimpleJSONResponse
     }
 
     public EffectResponse() { }
-
+    
+    public EffectResponse(uint id, EffectStatus status, StandardErrors messageID)
+        : this(id, status, 0, messageID) { }
+    
     public EffectResponse(uint id, EffectStatus status, string? message = null)
         : this(id, status, 0, message) { }
 
+    public EffectResponse(uint id, EffectStatus status, TimeSpan timeRemaining, StandardErrors messageID)
+        : this(id, status, (long)timeRemaining.TotalMilliseconds, messageID) { }
+
     public EffectResponse(uint id, EffectStatus status, TimeSpan timeRemaining, string? message = null)
         : this(id, status, (long)timeRemaining.TotalMilliseconds, message) { }
+
+    public EffectResponse(uint id, EffectStatus status, long timeRemaining, StandardErrors messageID)
+        : this(id, status, timeRemaining) => this.messageID = messageID;
 
     [JsonConstructor]
     public EffectResponse(uint id, EffectStatus status, long timeRemaining, string? message = null)
