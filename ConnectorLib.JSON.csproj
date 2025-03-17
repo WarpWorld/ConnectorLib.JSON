@@ -59,13 +59,16 @@
     <LangVersion>preview</LangVersion>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Certificates\WarpWorld_Code.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>false</DelaySign>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!--<ImplicitUsings>enable</ImplicitUsings>-->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly> <!--change this to false if you don't have a certificate-->
+    <AssemblyOriginatorKeyFile>..\Certificates\WarpWorld_Code.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -74,8 +77,8 @@
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if &quot;%25SIGNTOOL%25&quot;==&quot;&quot; set SIGNTOOL=$(SolutionDir)\Tools\signtool.exe&#xD;&#xA;if exist &quot;%25SIGNTOOL%25&quot; goto sign_ok&#xD;&#xA;    echo SignTool is missing. Please install the Windows 10 App Certification Kit.&#xD;&#xA;    exit -1&#xD;&#xA;:sign_ok&#xD;&#xA;&quot;%25SIGNTOOL%25&quot; sign /f &quot;$(SolutionDir)Certificates\WarpWorld_Code.pfx&quot; /fd SHA256 /p $(WW_CERTPASS) /t http://timestamp.digicert.com $(TargetPath)&#xD;&#xA;&#xD;&#xA;if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto clean_done&#xD;&#xA;del /q &quot;$(TargetDir)*.pdb&quot;&#xD;&#xA;:clean_done" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SignAssembly)' == 'true'">
+    <Exec  Command="if &quot;%25SIGNTOOL%25&quot;==&quot;&quot; set SIGNTOOL=$(SolutionDir)\Tools\signtool.exe&#xD;&#xA;if exist &quot;%25SIGNTOOL%25&quot; goto sign_ok&#xD;&#xA;    echo SignTool is missing. Please install the Windows 10 App Certification Kit.&#xD;&#xA;    exit -1&#xD;&#xA;:sign_ok&#xD;&#xA;&quot;%25SIGNTOOL%25&quot; sign /f &quot;$(SolutionDir)Certificates\WarpWorld_Code.pfx&quot; /fd SHA256 /p $(WW_CERTPASS) /t http://timestamp.digicert.com $(TargetPath)&#xD;&#xA;&#xD;&#xA;if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto clean_done&#xD;&#xA;del /q &quot;$(TargetDir)*.pdb&quot;&#xD;&#xA;:clean_done" />
   </Target>
 
 </Project>
