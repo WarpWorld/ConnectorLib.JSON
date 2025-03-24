@@ -55,6 +55,14 @@
     </Reference>-->
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Collections.Immutable" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <PackageReference Include="System.Collections.Immutable" Version="9.0.3" />
+  </ItemGroup>
+
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>

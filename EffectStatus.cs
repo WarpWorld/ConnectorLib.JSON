@@ -16,9 +16,9 @@ public enum EffectStatus
     Unavailable = 0x02,
     /// <summary>The effect cannot be triggered right now, try again in a few seconds. This is the "normal" failure response.</summary>
     Retry = 0x03,
-    /// <summary>INTERNAL USE ONLY. The effect has been queued for execution after the current one ends.</summary>
+    /// <summary>INTERNAL USE ONLY. The effect has been queued for execution after the current one ends. Do not send this status unless explicitly instructed to by Warp World.</summary>
     Queue = 0x04,
-    /// <summary>INTERNAL USE ONLY. The effect triggered successfully and is now active until it ends.</summary>
+    /// <summary>INTERNAL USE ONLY. The effect triggered successfully and is now active until it ends. Do not send this status unless explicitly instructed to by Warp World.</summary>
     Running = 0x05,
     /// <summary>The timed effect has been paused and is now waiting.</summary>
     Paused = 0x06,
@@ -29,7 +29,7 @@ public enum EffectStatus
     /// <summary>The effect cannot be triggered right now. Wait for the specified time period for a followup response. Does not reschedule the request.</summary>
     Wait = 0x09,
     /// <summary>The effect is being managed by a remote scheduler. Wait indefinitely.</summary>
-    RemoteScheduled = 0xA0,
+    RemoteScheduled = 0x0A,
 
     //== Effect Class Messages
     /// <summary>The effect should be shown in the menu.</summary>
@@ -40,6 +40,9 @@ public enum EffectStatus
     Selectable = 0x82,
     /// <summary>The effect should be unselectable in the menu.</summary>
     NotSelectable = 0x83,
+
+    /// <summary>INTERNAL USE ONLY. Absolutely do not send this status.</summary>
+    Reserved0 = 0xA0,
 
     //== System Status Messages
     /// <summary>The processor isn't ready to start or has shut down.</summary>
