@@ -57,7 +57,7 @@ public class EffectUpdate : SimpleJSONResponse
 
     public EffectUpdate(string[] ids, EffectStatus status, string? message = null)
     {
-        this.ids = ids.ToArray();
+        this.ids = ids;
         idType = IdentifierType.Effect;
         this.status = status;
         this.message = message;
