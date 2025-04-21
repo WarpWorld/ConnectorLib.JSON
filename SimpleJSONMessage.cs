@@ -32,7 +32,7 @@ public abstract class SimpleJSONMessage
     /// </summary>
     /// <remarks>
     /// This field is intended for use by the Crowd Control client.
-    /// It is not intended for use by game plugin developers.
+    /// It is not intended for use by game/plugin developers.
     /// </remarks>
     public static uint NextID
     {
