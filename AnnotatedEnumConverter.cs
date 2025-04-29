@@ -8,7 +8,11 @@ using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
+#if NETSTANDARD1_3_OR_GREATER
+internal class AnnotatedEnumConverter<T> : JsonConverter<T> where T : unmanaged, Enum
+#else
 internal class AnnotatedEnumConverter<T> : JsonConverter<T> where T : struct, Enum
+#endif
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class JsonValueAttribute(string value) : Attribute
