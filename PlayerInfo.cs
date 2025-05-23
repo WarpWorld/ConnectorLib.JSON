@@ -13,5 +13,5 @@ namespace ConnectorLib.JSON;
 public class PlayerInfo : SimpleJSONRequest
 {
     public JObject? player; //todo fix this
-    public PlayerInfo() => type = RequestType.EffectStart;
+    public PlayerInfo() => type = RequestType.PlayerInfo;
 }

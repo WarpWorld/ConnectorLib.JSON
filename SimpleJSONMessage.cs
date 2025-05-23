@@ -51,7 +51,7 @@ public abstract class SimpleJSONMessage
     public abstract uint ID { get; }
 
     /// <summary>
-    /// <c>True</c> if this message is a keepalive/heartbeat, <c>false</c> otherwise.
+    /// <c>true</c> if this message is a keepalive/heartbeat; otherwise, <c>false</c>.
     /// </summary>
     public abstract bool IsKeepAlive { get; }
 

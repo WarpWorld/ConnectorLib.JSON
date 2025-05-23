@@ -43,7 +43,7 @@ public class SimpleJSONResponse : SimpleJSONMessage
     /// </summary>
     /// <param name="json">The JSON string containing the response message.</param>
     /// <param name="response">A <see cref="SimpleJSONResponse"/> object corresponding to the supplied JSON.</param>
-    /// <returns><c>True</c> if the operation succeeded, <c>false</c> otherwise.</returns>
+    /// <returns><c>true</c> if the operation succeeded; otherwise, <c>false</c>.</returns>
 #if NETSTANDARD2_1_OR_GREATER
     public static bool TryParse(string json, [MaybeNullWhen(false)] out SimpleJSONResponse response)
 #else
@@ -56,7 +56,7 @@ public class SimpleJSONResponse : SimpleJSONMessage
     /// </summary>
     /// <param name="j">The JSON object containing the response message.</param>
     /// <param name="response">A <see cref="SimpleJSONResponse"/> object corresponding to the supplied JSON.</param>
-    /// <returns><c>True</c> if the operation succeeded, <c>false</c> otherwise.</returns>
+    /// <returns><c>true</c> if the operation succeeded; otherwise, <c>false</c>.</returns>
 #if NETSTANDARD2_1_OR_GREATER
     public static bool TryParse(JObject j, [MaybeNullWhen(false)] out SimpleJSONResponse response)
 #else
