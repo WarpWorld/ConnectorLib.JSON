@@ -9,6 +9,12 @@ using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
+/// <summary> A message from the Crowd Control client to the game mod.</summary>
+/// <remarks>
+/// These are messages from the Crowd Control client to the game mod.<br/>
+/// The name <see cref="RequestType"/> is misleading and should not be taken as an
+/// indication that all of these message types are necessarily effect requests.
+/// </remarks>
 #if NETSTANDARD1_3_OR_GREATER
 [Serializable]
 #endif

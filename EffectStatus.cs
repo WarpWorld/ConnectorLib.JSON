@@ -3,6 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ConnectorLib.JSON;
 
+/// <summary>The state of an effect.</summary>
+/// <remarks>These values are distinct from the set used by other pack types.</remarks>
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [JsonConverter(typeof(CamelCaseStringEnumConverter))]
 public enum EffectStatus

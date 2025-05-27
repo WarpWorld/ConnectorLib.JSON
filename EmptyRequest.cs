@@ -4,6 +4,7 @@ using System;
 
 namespace ConnectorLib.JSON;
 
+/// <summary>An empty request.</summary>
 #if NETSTANDARD1_3_OR_GREATER
 [Serializable]
 #endif

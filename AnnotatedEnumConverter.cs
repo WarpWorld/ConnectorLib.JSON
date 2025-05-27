@@ -8,15 +8,19 @@ using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
+/// <summary>A JSON converter for enums that allows for custom string values.</summary>
+/// <typeparam name="T"></typeparam>
 #if NETSTANDARD1_3_OR_GREATER
 internal class AnnotatedEnumConverter<T> : JsonConverter<T> where T : unmanaged, Enum
 #else
 internal class AnnotatedEnumConverter<T> : JsonConverter<T> where T : struct, Enum
 #endif
 {
+    /// <summary>Attribute to specify a custom string value for an enum member.</summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class JsonValueAttribute(string value) : Attribute
     {
+        /// <summary>The custom string value for the enum member.</summary>
         public readonly string Value = value;
     }
 

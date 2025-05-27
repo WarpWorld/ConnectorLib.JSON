@@ -6,8 +6,10 @@ using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
+/// <summary>Converts a <see cref="ParameterColorValue"/> to and from a hex string.</summary>
 internal class HexColorConverter : JsonConverter<ParameterColorValue>
 {
+    /// <summary>A lookup table for converting hex characters to their byte values.</summary>
     private static readonly Dictionary<char, byte> CHAR_LOOKUP = new()
     {
         {'0',0x0},
@@ -29,9 +31,7 @@ internal class HexColorConverter : JsonConverter<ParameterColorValue>
     };
 
     public override void WriteJson(JsonWriter writer, ParameterColorValue value, JsonSerializer serializer)
-    {
-        serializer.Serialize(writer, $"#{(value.A != 0xFF ? value.A.ToString("X2") : string.Empty)}{value.R:X2}{value.G:X2}{value.B:X2}");
-    }
+        => serializer.Serialize(writer, $"#{(value.A != 0xFF ? value.A.ToString("X2") : string.Empty)}{value.R:X2}{value.G:X2}{value.B:X2}");
 
     public override ParameterColorValue ReadJson(JsonReader reader, Type objectType, ParameterColorValue existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
@@ -40,7 +40,11 @@ internal class HexColorConverter : JsonConverter<ParameterColorValue>
         throw new SerializationException("Unrecognized color code.");
     }
 
-    public static bool TryParse(string value, out ParameterColorValue color)
+    /// <summary>Tries to parse a hex string into a <see cref="ParameterColorValue"/>.</summary>
+    /// <param name="value">The hex string to parse.</param>
+    /// <param name="color">The resulting <see cref="ParameterColorValue"/>.</param>
+    /// <returns><c>true</c> if the parsing was successful; otherwise, <c>false</c>.</returns>
+    public static bool TryParse(string? value, out ParameterColorValue color)
     {
         if (value == null)
         {
@@ -53,7 +57,7 @@ internal class HexColorConverter : JsonConverter<ParameterColorValue>
         {
             case 6:
                 {
-                    string[] hexStrings = Chop(value, 2);
+                    string[] hexStrings = value.Chop(2);
                     byte r = byte.TryParse(hexStrings[0], NumberStyles.AllowHexSpecifier, NumberFormatInfo.InvariantInfo, out byte v) ? v : (byte)0;
                     byte g = byte.TryParse(hexStrings[1], NumberStyles.AllowHexSpecifier, NumberFormatInfo.InvariantInfo, out v) ? v : (byte)0;
                     byte b = byte.TryParse(hexStrings[2], NumberStyles.AllowHexSpecifier, NumberFormatInfo.InvariantInfo, out v) ? v : (byte)0;
@@ -62,7 +66,7 @@ internal class HexColorConverter : JsonConverter<ParameterColorValue>
                 }
             case 8:
                 {
-                    string[] hexStrings = Chop(value, 2);
+                    string[] hexStrings = value.Chop(2);
                     byte a = byte.TryParse(hexStrings[0], NumberStyles.AllowHexSpecifier, NumberFormatInfo.InvariantInfo, out byte v) ? v : (byte)0;
                     byte r = byte.TryParse(hexStrings[1], NumberStyles.AllowHexSpecifier, NumberFormatInfo.InvariantInfo, out v) ? v : (byte)0;
                     byte g = byte.TryParse(hexStrings[2], NumberStyles.AllowHexSpecifier, NumberFormatInfo.InvariantInfo, out v) ? v : (byte)0;
@@ -90,26 +94,6 @@ internal class HexColorConverter : JsonConverter<ParameterColorValue>
             default:
                 color = default;
                 return false;
-                //throw new SerializationException("Unrecognized digit count, was expecting 3, 4, 6 or 8.");
         }
-    }
-
-    private static unsafe string[] Chop(string value, int chopLength)
-    {
-        int len = value.Length;
-        char* segment = stackalloc char[chopLength];
-        string[] result = new string[len];
-        for (int i = 0; i < len; i += chopLength)
-        {
-            int j = 0;
-            for (; j < chopLength; j++)
-            {
-                int next = i + j;
-                if (next >= len) break;
-                segment[j] = value[next];
-            }
-            result[i / chopLength] = new string(segment, 0, j);
-        }
-        return result;
     }
 }

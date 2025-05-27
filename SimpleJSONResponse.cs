@@ -7,6 +7,12 @@ using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
+/// <summary>A message from the game mod to the Crowd Control client.</summary>
+/// <remarks>
+/// These are messages from the game mod to the Crowd Control client.<br/>
+/// The name <see cref="ResponseType"/> is misleading and should not be taken as an
+/// indication that all of these message types are necessarily responses to messages.
+/// </remarks>
 #if NETSTANDARD1_3_OR_GREATER
 [Serializable]
 #endif
@@ -35,6 +41,8 @@ public class SimpleJSONResponse : SimpleJSONMessage
     [JsonIgnore] public override uint ID => id;
 
     [JsonIgnore] public override bool IsKeepAlive => type == ResponseType.KeepAlive;
+    
+    /// <summary>A keep-alive message instance.</summary>
 
     [JsonIgnore] public static SimpleJSONResponse KeepAlive { get; } = new EmptyResponse { type = ResponseType.KeepAlive };
 

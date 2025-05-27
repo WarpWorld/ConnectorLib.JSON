@@ -1,8 +1,31 @@
-﻿namespace ConnectorLib.JSON;
+﻿using System.Runtime.CompilerServices;
 
+namespace ConnectorLib.JSON;
+
+/// <summary>Extensions for the <see cref="string"/> class.</summary>
 internal static class StringEx
 {
-    public static string ToCamelCase(this string input)
+    /// <summary>Checks if a string is null or consists only of whitespace characters.</summary>
+    /// <param name="input">The string to check.</param>
+    /// <returns><c>true</c> if the string is null or consists only of whitespace characters; otherwise, <c>false</c>.</returns>
+#if NET35
+    public static bool IsNullOrWhiteSpace(this string? input)
+    {
+        if (input is null) return true;
+        for (int i = 0; i < input.Length; i++)
+            if (!char.IsWhiteSpace(input[i]))
+                return false;
+        return true;
+    }
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNullOrWhiteSpace(this string? input) => string.IsNullOrWhiteSpace(input);
+#endif
+    
+    /// <summary>Converts a string to camel case.</summary>
+    /// <param name="input">The string to convert.</param>
+    /// <returns>The camel case version of the string.</returns>
+    internal static string ToCamelCase(this string input)
     {
         bool encounteredLowercase = false;
         string result = "";
@@ -37,6 +60,31 @@ internal static class StringEx
                 }
             }
         }
+        return result;
+    }
+    
+    /// <summary>Chops a string into segments of a specified length.</summary>
+    /// <param name="value">The string to chop.</param>
+    /// <param name="chopLength">The length of each segment.</param>
+    /// <returns>An array of strings, each containing a segment of the original string.</returns>
+    internal static unsafe string[] Chop(this string value, int chopLength)
+    {
+        int len = value.Length;
+        char* segment = stackalloc char[chopLength];
+        string[] result = new string[len];
+        for (int i = 0; i < len; i += chopLength)
+        {
+            int j = 0;
+            for (; j < chopLength; j++)
+            {
+                int next = i + j;
+                if (next >= len) break;
+                segment[j] = value[next];
+            }
+
+            result[i / chopLength] = new string(segment, 0, j);
+        }
+
         return result;
     }
 }

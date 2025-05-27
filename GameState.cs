@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ConnectorLib.JSON;
 
-/// <summary>Represents the state of a game.</summary>
+/// <summary>The state of a game.</summary>
 //if you update this, also update the one in CrowdControl.Games
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [JsonConverter(typeof(CamelCaseStringEnumConverter))]

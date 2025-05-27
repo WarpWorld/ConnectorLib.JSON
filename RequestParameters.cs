@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ConnectorLib.JSON;
 
+/// <summary>A collection of request parameters.</summary>
 #if NETSTANDARD1_3_OR_GREATER
 [Serializable]
 #endif
@@ -19,22 +20,29 @@ public class RequestParameters :
     IReadOnlyList<string>, IReadOnlyDictionary<string, IParameterValue> //this unfortunately means you have to cast this when using linq
 #endif
 {
+    /// <summary>A dictionary that holds the parameters by their ID.</summary>
     private readonly Dictionary<string, IParameterValue> _parameters;
+    
+    /// <summary>A list of parameter identifiers.</summary>
     private readonly List<string> _parameter_list;
 
+    /// <summary>Creates a new instance of the <see cref="RequestParameters"/> class.</summary>
     private RequestParameters()
     {
         _parameters = new();
         _parameter_list = new();
     }
 
-    public RequestParameters(IEnumerable<IParameterValue> list)
+    /// <inheritdoc cref="RequestParameters()"/>
+    /// <param name="parameters">The parameters to initialize the collection with.</param>
+    public RequestParameters(IEnumerable<IParameterValue> parameters)
     {
-        list = list.ToArray();
-        _parameters = list.ToDictionary(d => d.ID);
-        _parameter_list = list.Select(v => v.Value.ToString()).ToList();
+        parameters = parameters.ToArray();
+        _parameters = parameters.ToDictionary(d => d.ID);
+        _parameter_list = parameters.Select(v => v.Value.ToString()).ToList();
     }
 
+    /// <inheritdoc cref="RequestParameters(IEnumerable{IParameterValue})"/>
     public RequestParameters(IEnumerable<KeyValuePair<string, IParameterValue>> parameters)
     {
         _parameters = parameters.ToDictionary();
@@ -69,44 +77,58 @@ public class RequestParameters :
     public IEnumerable<string> Keys => _parameters.Keys;
     public IEnumerable<IParameterValue> Values => _parameters.Values;
 
+    /// <inheritdoc cref="IReadOnlyCollection{T}.Count"/>
     public int Count => _parameters.Count;
 
+    /// <inheritdoc cref="System.Linq.Enumerable.Where{TSource}(IEnumerable{TSource}, Func{TSource, bool})"/>
     public IEnumerable<string> Where(Func<string, bool> predicate)
         => ((IEnumerable<string>)this).Where(predicate);
 
+    /// <inheritdoc cref="System.Linq.Enumerable.Select{TSource, TResult}(IEnumerable{TSource}, Func{TSource, TResult})"/>
     public IEnumerable<TResult> Select<TResult>(Func<string, TResult> selector)
         => ((IEnumerable<string>)this).Select(selector);
 
+    /// <inheritdoc cref="System.Linq.Enumerable.SelectMany{TSource, TResult}(IEnumerable{TSource}, Func{TSource, IEnumerable{TResult}})"/>
     public IEnumerable<TResult> SelectMany<TResult>(Func<string, IEnumerable<TResult>> selector)
         => ((IEnumerable<string>)this).SelectMany(selector);
 
+    /// <inheritdoc cref="System.Linq.Enumerable.SelectMany{TSource, TResult}(IEnumerable{TSource}, Func{TSource, int, IEnumerable{TResult}})"/>
     public IEnumerable<TResult> SelectMany<TResult>(Func<string, int, IEnumerable<TResult>> selector)
         => ((IEnumerable<string>)this).SelectMany(selector);
 
+    /// <inheritdoc cref="System.Linq.Enumerable.First{TSource}(IEnumerable{TSource})"/>
     public string First()
         => ((IEnumerable<string>)this).First();
 
+    /// <inheritdoc cref="System.Linq.Enumerable.First{TSource}(IEnumerable{TSource}, Func{TSource, bool})"/>
     public string First(Func<string, bool> predicate)
         => ((IEnumerable<string>)this).First(predicate);
 
+    /// <inheritdoc cref="System.Linq.Enumerable.FirstOrDefault{TSource}(IEnumerable{TSource})"/>
     public string? FirstOrDefault()
         => ((IEnumerable<string>)this).FirstOrDefault();
 
+    /// <inheritdoc cref="System.Linq.Enumerable.FirstOrDefault{TSource}(IEnumerable{TSource}, TSource)"/>
     public string FirstOrDefault(string defaultValue)
         => ((IEnumerable<string>)this).FirstOrDefault() ?? defaultValue;
 
+    /// <inheritdoc cref="System.Linq.Enumerable.FirstOrDefault{TSource}(IEnumerable{TSource}, Func{TSource, bool})"/>
     public string? FirstOrDefault(Func<string, bool> predicate)
         => ((IEnumerable<string>)this).FirstOrDefault(predicate);
 
+    /// <inheritdoc cref="System.Linq.Enumerable.FirstOrDefault{TSource}(IEnumerable{TSource}, Func{TSource, bool}, TSource)"/>
     public string FirstOrDefault(Func<string, bool> predicate, string defaultValue)
         => ((IEnumerable<string>)this).FirstOrDefault(predicate) ?? defaultValue;
 
+    /// <inheritdoc cref="System.Linq.Enumerable.Any{TSource}(IEnumerable{TSource})"/>
     public bool Any()
         => ((IEnumerable<string>)this).Any();
 
+    /// <inheritdoc cref="System.Linq.Enumerable.Any{TSource}(IEnumerable{TSource}, Func{TSource, bool})"/>
     public bool Any(Func<string, bool> predicate)
         => ((IEnumerable<string>)this).Any(predicate);
 
+    /// <summary>Converts the request parameters to/from a JSON string representation.</summary>
     private class Converter : JsonConverter<RequestParameters>
     {
         public override void WriteJson(JsonWriter writer, RequestParameters? value, JsonSerializer serializer)
@@ -159,88 +181,4 @@ public class RequestParameters :
             return new RequestParameters(values);
         }
     }
-}
-
-//[JsonConverter(typeof(ParameterBase.Converter))]
-public interface IParameterValue
-{
-    string ID { get; }
-    string Name { get; }
-    ParameterBase.ParameterType Type { get; }
-    object? Value { get; }
-}
-
-//[JsonConverter(typeof(Converter))]
-public abstract class ParameterBase
-{
-    /*
-     *     parameters?: Record<string, {
-      type: 'options' | 'hex-color'
-      title: string
-      value: string
-    }>
-     */
-    /// <summary>
-    /// The index name of the group.
-    /// </summary>
-    [JsonIgnore]
-    public readonly string ID;
-
-    /// <summary>
-    /// The display name of the group.
-    /// </summary>
-    [JsonProperty(PropertyName = "title")]
-    public readonly string Name;
-
-    /// <summary>
-    /// The display name of the group.
-    /// </summary>
-    [JsonProperty(PropertyName = "type")]
-    public readonly ParameterType Type;
-
-    [JsonConverter(typeof(AnnotatedEnumConverter<ParameterType>))]
-    public enum ParameterType
-    {
-        [AnnotatedEnumConverter<ParameterType>.JsonValueAttribute("options")]
-        Options = 0, //this is the default if the value is missing
-        [AnnotatedEnumConverter<ParameterType>.JsonValueAttribute("hex-color")]
-        HexColor
-    }
-
-    protected ParameterBase(string name, string id, ParameterType type)
-    {
-        ID = id;
-        Name = name;
-        Type = type;
-    }
-
-    /*public class Converter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType) => objectType == typeof(ParameterBase); //do not work for subtypes or this will get stuck in a recursion loop
-
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-        {
-            if (value == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            serializer.Serialize(writer, value, value.GetType());
-        }
-
-        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-        {
-            JObject j = JObject.Load(reader);
-            ParameterType type = j["type"]?.Value<ParameterType>() ?? ParameterType.Options;
-            switch (type)
-            {
-                case ParameterType.Options:
-                    return j.ToObject<ParameterValue<string>>();
-                case ParameterType.HexColor:
-                    return j.ToObject<ParameterColor>();
-                default:
-                    throw new SerializationException("Unknown parameter type.");
-            }
-        }
-    }*/
 }

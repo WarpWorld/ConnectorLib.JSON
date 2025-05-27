@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ConnectorLib.JSON;
 
+/// <summary>JSON converter for enums that converts enum values to camel case strings.</summary>
 public class CamelCaseStringEnumConverter : JsonConverter<Enum>
 {
     public override void WriteJson(JsonWriter writer, Enum? value, JsonSerializer serializer)
@@ -20,6 +21,10 @@ public class CamelCaseStringEnumConverter : JsonConverter<Enum>
     public override Enum ReadJson(JsonReader reader, Type objectType, Enum? existingValue, bool hasExistingValue, JsonSerializer serializer)
         => ReadJToken(JToken.ReadFrom(reader), objectType);
 
+    /// <summary>Reads a JToken and converts it to an enum value.</summary>
+    /// <param name="reader">The JToken to read.</param>
+    /// <param name="objectType">The type of the enum.</param>
+    /// <returns>The enum value.</returns>
     public static Enum ReadJToken(JToken reader, Type objectType)
     {
         switch (reader.Type)

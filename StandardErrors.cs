@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
+/// <summary>The standard set of errors that can occur in the Crowd Control system.</summary>
 [JsonConverter(typeof(CamelCaseStringEnumConverter))]
 //remember to copy updates into CrowdControl.Games.StandardErrors
 public enum StandardErrors

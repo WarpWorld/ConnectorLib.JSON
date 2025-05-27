@@ -3,11 +3,10 @@ using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
+/// <summary>Base class for all Crowd Control SimpleJSON messages.</summary>
 public abstract class SimpleJSONMessage
 {
-    /// <summary>
-    /// The JSON serializer settings required by the Crowd Control SimpleJSON protocol.
-    /// </summary>
+    /// <summary>The JSON serializer settings required by the Crowd Control SimpleJSON protocol.</summary>
     public static readonly JsonSerializerSettings JSON_SERIALIZER_SETTINGS = new()
     {
         NullValueHandling = NullValueHandling.Ignore,
@@ -15,9 +14,7 @@ public abstract class SimpleJSONMessage
         Formatting = Formatting.None
     };
 
-    /// <summary>
-    /// The JSON serializer settings required by the Crowd Control SimpleJSON protocol.
-    /// </summary>
+    /// <summary>The JSON serializer settings required by the Crowd Control SimpleJSON protocol.</summary>
     public static readonly JsonSerializer JSON_SERIALIZER = new()
     {
         NullValueHandling = JSON_SERIALIZER_SETTINGS.NullValueHandling,
@@ -27,9 +24,7 @@ public abstract class SimpleJSONMessage
 
     private static int _next_id = 0;
 
-    /// <summary>
-    /// Gets the next block ID.
-    /// </summary>
+    /// <summary>Gets the next block ID.</summary>
     /// <remarks>
     /// This field is intended for use by the Crowd Control client.
     /// It is not intended for use by game/plugin developers.
@@ -45,15 +40,12 @@ public abstract class SimpleJSONMessage
         }
     }
 
-    /// <summary>
-    /// The message ID of the message to which this is a response.
-    /// </summary>
+    /// <summary>The message ID of the message to which this is a response.</summary>
     public abstract uint ID { get; }
 
-    /// <summary>
-    /// <c>true</c> if this message is a keepalive/heartbeat; otherwise, <c>false</c>.
-    /// </summary>
+    /// <summary><c>true</c> if this message is a keepalive/heartbeat; otherwise, <c>false</c>.</summary>
     public abstract bool IsKeepAlive { get; }
 
+    /// <summary>Serializes this message to a JSON string.</summary>
     public string Serialize() => JsonConvert.SerializeObject(this, JSON_SERIALIZER_SETTINGS);
 }
