@@ -37,15 +37,17 @@ public class GenericEventResponse : SimpleJSONResponse
 
     /// <inheritdoc cref="GenericEventResponse(string)"/>
     /// <param name="data">The data associated with the event.</param>
-    [JsonConstructor]
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    public GenericEventResponse(string eventType, IEnumerable<KeyValuePair<string, object>>? data) : this(eventType)
-        => this.data = data?.ToDictionary();
+    public GenericEventResponse(string eventType, IEnumerable<KeyValuePair<string, object>>? data, bool @internal = false) : this(eventType)
+    {
+        this.data = data?.ToDictionary();
+        this.@internal = @internal;
+    }
 
     /// <inheritdoc cref="GenericEventResponse(string, IEnumerable{KeyValuePair{string, object}}?)"/>
     /// <param name="internal">Indicates that this event is locally-generated.</param>
     [JsonConstructor]
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    public GenericEventResponse(string eventType, IEnumerable<KeyValuePair<string, object>>? data, bool @internal) : this(eventType, data)
+    public GenericEventResponse(string eventType, Dictionary<string, object>? data, [JsonProperty(PropertyName = "internal")] bool @internal) : this(eventType, data)
         => this.@internal = @internal;
 }
