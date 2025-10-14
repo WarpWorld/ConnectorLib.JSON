@@ -1,4 +1,9 @@
-﻿using System.Threading;
+﻿#if NETSTANDARD2_0_OR_GREATER
+using System;
+using System.IO;
+using System.Reflection;
+#endif
+using System.Threading;
 using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
@@ -6,6 +11,17 @@ namespace ConnectorLib.JSON;
 /// <summary>Base class for all Crowd Control SimpleJSON messages.</summary>
 public abstract class SimpleJSONMessage
 {
+#if NETSTANDARD2_0_OR_GREATER
+    static SimpleJSONMessage()
+    {
+        AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
+        {
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), new AssemblyName(args.Name).Name + ".dll");
+            return File.Exists(path) ? Assembly.LoadFrom(path) : null;
+        };
+    }
+#endif
+    
     /// <summary>The JSON serializer settings required by the Crowd Control SimpleJSON protocol.</summary>
     public static readonly JsonSerializerSettings JSON_SERIALIZER_SETTINGS = new()
     {
