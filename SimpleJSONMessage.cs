@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD2_0_OR_GREATER
+﻿#if NETSTANDARD2_0_OR_GREATER || NET6_0_OR_GREATER
 using System;
 using System.IO;
 using System.Reflection;
@@ -11,12 +11,12 @@ namespace ConnectorLib.JSON;
 /// <summary>Base class for all Crowd Control SimpleJSON messages.</summary>
 public abstract class SimpleJSONMessage
 {
-#if NETSTANDARD2_0_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER || NET6_0_OR_GREATER
     static SimpleJSONMessage()
     {
         AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
         {
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), new AssemblyName(args.Name).Name + ".dll");
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), args.Name + ".dll");
             return File.Exists(path) ? Assembly.LoadFrom(path) : null;
         };
     }
