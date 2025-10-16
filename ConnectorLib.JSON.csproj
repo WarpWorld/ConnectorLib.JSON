@@ -1,92 +1,89 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;netstandard1.3;netstandard2.0;netstandard2.1;net35</TargetFrameworks>
-    <RootNamespace>ConnectorLib.JSON</RootNamespace>
-    <AssemblyName>ConnectorLib.JSON</AssemblyName>
-    <PlatformTarget>x64</PlatformTarget>
-    <SelfContained>true</SelfContained>
-    <Platforms>AnyCPU;x64;x86</Platforms>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net6.0</TargetFrameworks>
+        <RootNamespace>ConnectorLib.JSON</RootNamespace>
+        <AssemblyName>ConnectorLib.JSON</AssemblyName>
+        <PlatformTarget>x64</PlatformTarget>
+        <SelfContained>true</SelfContained>
+        <Platforms>AnyCPU;x64;x86</Platforms>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <Build>$([System.DateTime]::op_Subtraction($([System.DateTime]::get_Now().get_Date()),$([System.DateTime]::new(2000,1,1))).get_TotalDays())</Build>
-    <Revision>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</Revision>
-    <Version Condition="'$(DesignTimeBuild)' != 'true' OR '$(BuildingProject)' == 'true'">5.0.$(Build).$(Revision)</Version>
-  </PropertyGroup>
+    <PropertyGroup>
+        <Build>$([System.DateTime]::op_Subtraction($([System.DateTime]::get_Now().get_Date()),$([System.DateTime]::new(2000,1,1))).get_TotalDays())</Build>
+        <Revision>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</Revision>
+        <Version Condition="'$(DesignTimeBuild)' != 'true' OR '$(BuildingProject)' == 'true'">5.0.$(Build).$(Revision)</Version>
+    </PropertyGroup>
 
-  <!-- Configuration for AnyCPU -->
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>bin\Debug\AnyCPU\$(TargetFramework)\</OutputPath>
-  </PropertyGroup>
+    <!-- Configuration for AnyCPU -->
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <OutputPath>bin\Debug\AnyCPU\$(TargetFramework)\</OutputPath>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>bin\Release\AnyCPU\$(TargetFramework)\</OutputPath>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <OutputPath>bin\Release\AnyCPU\$(TargetFramework)\</OutputPath>
+    </PropertyGroup>
 
-  <!-- Configuration for x86 -->
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\Debug\x86\$(TargetFramework)\</OutputPath>
-  </PropertyGroup>
+    <!-- Configuration for x86 -->
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+        <PlatformTarget>x86</PlatformTarget>
+        <OutputPath>bin\Debug\x86\$(TargetFramework)\</OutputPath>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\Release\x86\$(TargetFramework)\</OutputPath>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+        <PlatformTarget>x86</PlatformTarget>
+        <OutputPath>bin\Release\x86\$(TargetFramework)\</OutputPath>
+    </PropertyGroup>
 
-  <!-- Configuration for x64 -->
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>bin\Debug\x64\$(TargetFramework)\</OutputPath>
-  </PropertyGroup>
+    <!-- Configuration for x64 -->
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+        <PlatformTarget>x64</PlatformTarget>
+        <OutputPath>bin\Debug\x64\$(TargetFramework)\</OutputPath>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>bin\Release\x64\$(TargetFramework)\</OutputPath>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+        <PlatformTarget>x64</PlatformTarget>
+        <OutputPath>bin\Release\x64\$(TargetFramework)\</OutputPath>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <!--<Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\KatDevsGames\source\repos\hk-modding\Newtonsoft.Json.dll</HintPath>
-    </Reference>-->
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="System.Collections.Immutable" Version="9.0.9"/>
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Collections.Immutable" Version="9.0.9" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+        <PackageReference Include="System.Collections.Immutable" Version="9.0.9"/>
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <PackageReference Include="System.Collections.Immutable" Version="9.0.9" />
-  </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj" />
+    </ItemGroup>
 
-  <PropertyGroup>
-    <LangVersion>preview</LangVersion>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <!--<ImplicitUsings>enable</ImplicitUsings>-->
-  </PropertyGroup>
+    <PropertyGroup>
+        <LangVersion>preview</LangVersion>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <!--<ImplicitUsings>enable</ImplicitUsings>-->
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly> <!--change this to false if you don't have a certificate-->
-    <AssemblyOriginatorKeyFile>..\Certificates\WarpWorld_Code.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>false</DelaySign>
-  </PropertyGroup>
+    <PropertyGroup>
+        <SignAssembly>false</SignAssembly> <!--change this to false if you don't have a certificate-->
+        <AssemblyOriginatorKeyFile>..\Certificates\WarpWorld_Code.snk</AssemblyOriginatorKeyFile>
+        <DelaySign>false</DelaySign>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <Company>Warp World, Inc.</Company>
-    <Copyright>© 2025 Warp World, Inc.</Copyright>
-    <NeutralLanguage>en-US</NeutralLanguage>
-  </PropertyGroup>
+    <PropertyGroup>
+        <Company>Warp World, Inc.</Company>
+        <Copyright>© 2025 Warp World, Inc.</Copyright>
+        <NeutralLanguage>en-US</NeutralLanguage>
+    </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SignAssembly)' == 'true'">
-    <Exec  Command="if &quot;%25SIGNTOOL%25&quot;==&quot;&quot; set SIGNTOOL=$(SolutionDir)\Tools\signtool.exe&#xD;&#xA;if exist &quot;%25SIGNTOOL%25&quot; goto sign_ok&#xD;&#xA;    echo SignTool is missing. Please install the Windows 10 App Certification Kit.&#xD;&#xA;    exit -1&#xD;&#xA;:sign_ok&#xD;&#xA;&quot;%25SIGNTOOL%25&quot; sign /f &quot;$(SolutionDir)Certificates\WarpWorld_Code.pfx&quot; /fd SHA256 /p $(WW_CERTPASS) /t http://timestamp.digicert.com $(TargetPath)&#xD;&#xA;&#xD;&#xA;if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto clean_done&#xD;&#xA;del /q &quot;$(TargetDir)*.pdb&quot;&#xD;&#xA;:clean_done" />
-  </Target>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SignAssembly)' == 'true'">
+        <Exec Command="if &quot;%25SIGNTOOL%25&quot;==&quot;&quot; set SIGNTOOL=$(SolutionDir)\Tools\signtool.exe&#xD;&#xA;if exist &quot;%25SIGNTOOL%25&quot; goto sign_ok&#xD;&#xA;    echo SignTool is missing. Please install the Windows 10 App Certification Kit.&#xD;&#xA;    exit -1&#xD;&#xA;:sign_ok&#xD;&#xA;&quot;%25SIGNTOOL%25&quot; sign /f &quot;$(SolutionDir)Certificates\WarpWorld_Code.pfx&quot; /fd SHA256 /p $(WW_CERTPASS) /t http://timestamp.digicert.com $(TargetPath)&#xD;&#xA;&#xD;&#xA;if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto clean_done&#xD;&#xA;del /q &quot;$(TargetDir)*.pdb&quot;&#xD;&#xA;:clean_done"/>
+    </Target>
 
 </Project>
