@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD2_0_OR_GREATER
+﻿#if NETSTANDARD2_0_OR_GREATER && !NO_REFLECTION
 using System;
 using System.IO;
 using System.Reflection;
@@ -11,7 +11,7 @@ namespace ConnectorLib.JSON;
 /// <summary>Base class for all Crowd Control SimpleJSON messages.</summary>
 public abstract class SimpleJSONMessage
 {
-#if NETSTANDARD2_0_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER && !NO_REFLECTION
     static SimpleJSONMessage()
     {
         AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>

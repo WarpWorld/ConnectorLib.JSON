@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace ConnectorLib.JSON;
 
@@ -24,15 +26,45 @@ public abstract class ParameterBase
     /// <inheritdoc cref="IParameterValue.Type"/>
     [JsonProperty(PropertyName = "type")]
     public readonly ParameterType Type;
-
+    
     /// <summary>The type of parameter that this is.</summary>
-    [JsonConverter(typeof(AnnotatedEnumConverter<ParameterType>))]
+    [JsonConverter(typeof(ParameterTypeConverter))]
     public enum ParameterType
     {
-        [AnnotatedEnumConverter<ParameterType>.JsonValueAttribute("options")]
+        //[AnnotatedEnumConverter<ParameterType>.JsonValueAttribute("options")]
         Options = 0, //this is the default if the value is missing
-        [AnnotatedEnumConverter<ParameterType>.JsonValueAttribute("hex-color")]
+        //[AnnotatedEnumConverter<ParameterType>.JsonValueAttribute("hex-color")]
         HexColor
+    }
+
+    /// <summary>Converts <see cref="ParameterType"/> values to and from JSON.</summary>
+    /// <remarks>This converter was introduced in order to remove AnnotatedEnumConverter from the assembly.</remarks>
+    private class ParameterTypeConverter : JsonConverter<ParameterType>
+    {
+        public override void WriteJson(JsonWriter writer, ParameterType value, JsonSerializer serializer)
+        {
+            string str = value switch
+            {
+                ParameterType.Options => "options",
+                ParameterType.HexColor => "hex-color",
+                _ => throw new SerializationException("Unknown parameter type.")
+            };
+            writer.WriteValue(str);
+        }
+        public override ParameterType ReadJson(JsonReader reader, Type objectType, ParameterType existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+            string? str = reader.Value?.ToString().ToLowerInvariant();
+            switch (str)
+            {
+                case "options":
+                    return ParameterType.Options;
+                case "hexcolor":
+                case "hex-color":
+                    return ParameterType.HexColor;
+                default:
+                    throw new SerializationException("Unknown parameter type.");
+            }
+        }
     }
 
     /// <summary>Creates a new instance of the <see cref="ParameterBase"/> class.</summary>

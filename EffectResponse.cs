@@ -79,19 +79,20 @@ public class EffectResponse : SimpleJSONResponse
     /// <param name="status">The status of the effect.</param>
     [SuppressMessage("ReSharper", "IntroduceOptionalParameters.Global")]
     public EffectResponse(uint id, EffectStatus status)
-        : this(id, status, 0, null) { }
+        : this(id, status, (long)0, null) { }
     
     /// <inheritdoc cref="EffectResponse(uint, EffectStatus)"/>
     /// <param name="messageID">The standard ID of the error.</param>
+    /// <param name="message">The message to be displayed to the user.</param>
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    public EffectResponse(uint id, EffectStatus status, StandardErrors messageID)
-        : this(id, status, 0, messageID) { }
+    public EffectResponse(uint id, EffectStatus status, StandardErrors messageID, string? message = null)
+        : this(id, status, 0, messageID, message) { }
     
     /// <inheritdoc cref="EffectResponse(uint, EffectStatus)"/>
     /// <param name="message">The message to be displayed to the user.</param>
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
     public EffectResponse(uint id, EffectStatus status, string? message)
-        : this(id, status, 0, message) { }
+        : this(id, status, (long)0, message) { }
 
     /// <inheritdoc cref="EffectResponse(uint, EffectStatus)"/>
     /// <param name="timeRemaining">The time remaining on the running effect.</param>
@@ -110,29 +111,28 @@ public class EffectResponse : SimpleJSONResponse
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
     public EffectResponse(uint id, EffectStatus status, TimeSpan timeRemaining, string? message)
         : this(id, status, (long)timeRemaining.TotalMilliseconds, message) { }
-    
-    /// <inheritdoc cref="EffectResponse(uint, EffectStatus)"/>
-    /// <param name="timeRemaining">The time remaining on the running effect, in milliseconds.</param>
-    [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    [SuppressMessage("ReSharper", "IntroduceOptionalParameters.Global")]
-    public EffectResponse(uint id, EffectStatus status, long timeRemaining)
-        : this(id, status, timeRemaining, null) { }
 
     /// <inheritdoc cref="EffectResponse(uint, EffectStatus, long)"/>
-    /// <param name="messageID">The standard ID of the error.</param>
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    public EffectResponse(uint id, EffectStatus status, long timeRemaining, StandardErrors messageID)
-        : this(id, status, timeRemaining) => this.messageID = messageID;
-    
-    /// <inheritdoc cref="EffectResponse(uint, EffectStatus, long)"/>
-    /// <param name="message">The message to be displayed to the user.</param>
-    [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    [JsonConstructor]
-    public EffectResponse(uint id, EffectStatus status, long timeRemaining, string? message)
+    public EffectResponse(uint id, EffectStatus status, long timeRemaining, string? message = null)
     {
         this.id = id;
         this.status = status;
         this.timeRemaining = timeRemaining;
+        this.message = message;
+        type = ResponseType.EffectRequest;
+    }
+
+    /// <inheritdoc cref="EffectResponse(uint, EffectStatus, long, string?)"/>
+    /// <param name="messageID">The standard ID of the error.</param>
+    [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
+    [JsonConstructor]
+    public EffectResponse(uint id, EffectStatus status, long timeRemaining, StandardErrors messageID, string? message = null)
+    {
+        this.id = id;
+        this.status = status;
+        this.timeRemaining = timeRemaining;
+        this.messageID = messageID;
         this.message = message;
         type = ResponseType.EffectRequest;
     }
@@ -163,7 +163,7 @@ public class EffectResponse : SimpleJSONResponse
     /// <param name="id">The ID of the request that this response is for.</param>
     /// <param name="error">The standard ID of the error.</param>
     /// <returns>A failure response with the specified parameters.</returns>
-    public static EffectResponse Failure(uint id, StandardErrors error) => new(id, EffectStatus.Failure, error);
+    public static EffectResponse Failure(uint id, StandardErrors error, string? message = null) => new(id, EffectStatus.Failure, error, message);
     
     /// <summary>Creates a response indicating that the effect is unavailable.</summary>
     /// <param name="id">The ID of the request that this response is for.</param>
@@ -181,7 +181,7 @@ public class EffectResponse : SimpleJSONResponse
     /// <param name="id">The ID of the request that this response is for.</param>
     /// <param name="message">The message to be displayed to the user, if applicable.</param>
     /// <returns>A temporary failure response with the specified parameters.</returns>
-    public static EffectResponse Retry(uint id, string? message = null) => new(id, EffectStatus.Retry, 0, message);
+    public static EffectResponse Retry(uint id, string? message = null) => new(id, EffectStatus.Retry, (long)0, message);
 
     /// <inheritdoc cref="Retry(uint, string?)"/>
     /// <param name="delay">The delay time in milliseconds.</param>
@@ -212,7 +212,7 @@ public class EffectResponse : SimpleJSONResponse
     /// <summary>Creates a response indicating that the effect is paused.</summary>
     /// <param name="id">The ID of the request that this response is for.</param>
     /// <param name="message">The message to be displayed to the user, if applicable.</param>
-    public static EffectResponse Paused(uint id, string? message = null) => new(id, EffectStatus.Paused, 0, message);
+    public static EffectResponse Paused(uint id, string? message = null) => new(id, EffectStatus.Paused, (long)0, message);
     
     /// <inheritdoc cref="Paused(uint, string?)"/>
     /// <param name="delay">The delay time in milliseconds.</param>
@@ -242,7 +242,7 @@ public class EffectResponse : SimpleJSONResponse
     /// <summary>Creates a response indicating that the effect has resumed.</summary>
     /// <param name="id">The ID of the request that this response is for.</param>
     /// <param name="message">The message to be displayed to the user, if applicable.</param>
-    public static EffectResponse Resumed(uint id, string? message = null) => new(id, EffectStatus.Resumed, 0, message);
+    public static EffectResponse Resumed(uint id, string? message = null) => new(id, EffectStatus.Resumed, (long)0, message);
 
     /// <inheritdoc cref="Paused(uint, string?)"/>
     /// <param name="delay">The delay time in milliseconds.</param>
@@ -272,7 +272,7 @@ public class EffectResponse : SimpleJSONResponse
     /// <summary>Creates a response indicating that the effect has finished.</summary>
     /// <param name="id">The ID of the request that this response is for.</param>
     /// <param name="message">The message to be displayed to the user, if applicable.</param>
-    public static EffectResponse Finished(uint id, string? message = null) => new(id, EffectStatus.Finished, 0, message);
+    public static EffectResponse Finished(uint id, string? message = null) => new(id, EffectStatus.Finished, (long)0, message);
     
     /// <summary>Creates a response indicating that the effect has finished.</summary>
     /// <param name="id">The ID of the request that this response is for.</param>

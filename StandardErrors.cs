@@ -43,6 +43,10 @@ public enum StandardErrors
     /// <summary>The connector does not support the requested effect.</summary>
     ConnectorNotSupported = 0x2004,
 
+    //TCP Connector Errors
+    /// <summary>The connector received no response from the game.</summary>
+    NoResponse = 0x2100,
+
     //Settings Errors
     /// <summary>An error occurred while processing the pack settings.</summary>
     SettingsError = 0x3000,
@@ -115,15 +119,15 @@ public enum StandardErrors
     /// <summary>A required pack resource was missing.</summary>
     PackResourceMissing = 0x6001,
     
-    //Game Pack State Errors
-    /// <summary>A conflicting effect is already running.</summary>
-    ConflictingEffectRunning = 0x8000,
-    /// <summary>This effect cannot be queued and another instance is already running.</summary>
-    UnqueueablePending = 0x8001,
-    
     //Emulator Errors
     /// <summary>The emulator does not support this effect.</summary>
     EmulatorNotSupported = 0x7000,
     /// <summary>The emulator was not properly configured.</summary>
-    EmulatorInvalidSetting = 0x7001
+    EmulatorInvalidSetting = 0x7001,
+
+    //Game Pack State Errors
+    /// <summary>A conflicting effect is already running.</summary>
+    ConflictingEffectRunning = 0x8000,
+    /// <summary>This effect cannot be queued and another instance is already running.</summary>
+    UnqueueablePending = 0x8001
 }
