@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ConnectorLib.JSON;
 
@@ -25,7 +26,7 @@ public class GenericEventResponse : SimpleJSONResponse
     public string eventType;
     
     /// <summary>The data associated with the event.</summary>
-    public Dictionary<string, object>? data;
+    public Dictionary<string, JToken>? data;
 
     /// <summary>Creates a new instance of the <see cref="GenericEventResponse"/> class.</summary>
     /// <param name="eventType">The type of event.</param>
@@ -38,7 +39,7 @@ public class GenericEventResponse : SimpleJSONResponse
     /// <inheritdoc cref="GenericEventResponse(string)"/>
     /// <param name="data">The data associated with the event.</param>
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    public GenericEventResponse(string eventType, IEnumerable<KeyValuePair<string, object>>? data, bool @internal = false) : this(eventType)
+    public GenericEventResponse(string eventType, IEnumerable<KeyValuePair<string, JToken>>? data, bool @internal = false) : this(eventType)
     {
         this.data = data?.ToDictionary();
         this.@internal = @internal;
@@ -48,6 +49,6 @@ public class GenericEventResponse : SimpleJSONResponse
     /// <param name="internal">Indicates that this event is locally-generated.</param>
     [JsonConstructor]
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    public GenericEventResponse(string eventType, Dictionary<string, object>? data, [JsonProperty(PropertyName = "internal")] bool @internal) : this(eventType, data)
+    public GenericEventResponse(string eventType, Dictionary<string, JToken>? data, [JsonProperty(PropertyName = "internal")] bool @internal) : this(eventType, data)
         => this.@internal = @internal;
 }

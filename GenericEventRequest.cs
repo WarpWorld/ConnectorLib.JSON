@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ConnectorLib.JSON;
 
@@ -22,7 +23,7 @@ public class GenericEventRequest : SimpleJSONRequest
     public string eventType;
 
     /// <summary>The data associated with the event.</summary>
-    public Dictionary<string, object>? data;
+    public Dictionary<string, JToken>? data;
 
     /// <summary>Creates a new instance of the <see cref="GenericEventRequest"/> class.</summary>
     /// <param name="eventType">The type of event.</param>
@@ -36,13 +37,13 @@ public class GenericEventRequest : SimpleJSONRequest
     /// <param name="data">The data associated with the event.</param>
     [JsonConstructor]
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    public GenericEventRequest(string eventType, IEnumerable<KeyValuePair<string, object>>? data) : this(eventType)
+    public GenericEventRequest(string eventType, IEnumerable<KeyValuePair<string, JToken>>? data) : this(eventType)
         => this.data = data?.ToDictionary();
 
     /// <inheritdoc cref="GenericEventRequest(string, IEnumerable{KeyValuePair{string, object}}?)"/>
     /// <param name="internal">Indicates that this event is locally-generated.</param>
     [JsonConstructor]
     [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
-    public GenericEventRequest(string eventType, IEnumerable<KeyValuePair<string, object>>? data, bool @internal) : this(eventType, data)
+    public GenericEventRequest(string eventType, IEnumerable<KeyValuePair<string, JToken>>? data, bool @internal) : this(eventType, data)
         => this.@internal = @internal;
 }
