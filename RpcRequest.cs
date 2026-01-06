@@ -2,6 +2,7 @@
 using System;
 #endif
 using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json.Linq;
 
 namespace ConnectorLib.JSON;
 
@@ -17,6 +18,9 @@ public class RpcRequest : SimpleJSONResponse
 
     /// <summary>The parameters to be passed to the named method.</summary>
     public object?[]? args;
+    
+    /// <summary>The target of the RPC call.</summary>
+    public RpcTarget? target;
 
     /// <summary>Initializes a new instance of the <see cref="RpcRequest"/> class.</summary>
     public RpcRequest() => type = ResponseType.RpcRequest;

@@ -2,6 +2,7 @@
 using System;
 #endif
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -44,6 +45,9 @@ public class EffectRequest : SimpleJSONRequest
     
     /// <summary>The cost of the effect in coins.</summary>
     public long? cost;
+    
+    /// <summary>Additional parameter data associated with the effect.</summary>
+    public Dictionary<string, object?>? arguments;
     
     /// <summary>The ID of the effect request.</summary>
     public Guid? requestID;
