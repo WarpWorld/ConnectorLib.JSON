@@ -50,19 +50,20 @@
     <OutputPath>bin\Release\x64\$(TargetFramework)\</OutputPath>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net35'">
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <!--<Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\KatDevsGames\source\repos\hk-modding\Newtonsoft.Json.dll</HintPath>
-    </Reference>-->
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Collections.Immutable" Version="10.0.3" />
+    <PackageReference Include="System.Collections.Immutable" Version="10.0.6" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <PackageReference Include="System.Collections.Immutable" Version="10.0.3" />
+    <PackageReference Include="System.Collections.Immutable" Version="10.0.6" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -85,6 +86,10 @@
     <Company>Warp World, Inc.</Company>
     <Copyright>© 2026 Warp World, Inc.</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <WarningsAsErrors>$(WarningsAsErrors);NU1605;CA1069</WarningsAsErrors>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SignAssembly)' == 'true'">

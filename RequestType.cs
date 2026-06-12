@@ -14,26 +14,26 @@ namespace ConnectorLib.JSON;
 //[JsonConverter(typeof(CamelCaseStringEnumConverter))]
 public enum RequestType : byte
 {
+    /// <summary>Request to test-start an effect. Games that support this should respond as if the effect has started or failed, but not actually start it.</summary> 
+    EffectTest = 0x00,
+
+    /// <summary>Request to start an effect.</summary>
+    EffectStart = 0x01,
+
+    /// <summary>Request to stop an effect.</summary>
+    EffectStop = 0x02,
+
     /// <inheritdoc cref="EffectTest"/>
     [Obsolete($"Use {nameof(EffectTest)} instead.")]
     Test = EffectTest,
-    
-    /// <summary>Request to test-start an effect. Games that support this should respond as if the effect has started or failed, but not actually start it.</summary> 
-    EffectTest = 0x00,
 
     /// <inheritdoc cref="EffectStart"/>
     [Obsolete($"Use {nameof(EffectStart)} instead.")]
     Start = EffectStart,
-    
-    /// <summary>Request to start an effect.</summary>
-    EffectStart = 0x01,
 
     /// <inheritdoc cref="EffectStop"/>
     [Obsolete($"Use {nameof(EffectStop)} instead.")]
     Stop = EffectStop,
-    
-    /// <summary>Request to stop an effect.</summary>
-    EffectStop = 0x02,
 
     /// <summary>Generic event callback.</summary>
     GenericEvent = 0x10,

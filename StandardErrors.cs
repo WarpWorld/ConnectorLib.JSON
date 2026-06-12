@@ -18,10 +18,10 @@ public enum StandardErrors
     /// <summary>The request was invalid.</summary>
     BadRequest = 0x1000,
     /// <summary>The effect was not available.</summary>
-    [Obsolete($"Use {nameof(EffectUnknown)} instead.")]
-    UnknownEffect = 0x1001,
-    /// <summary>The effect was not available.</summary>
     EffectUnknown = 0x1001,
+    /// <summary>The effect was not available.</summary>
+    [Obsolete($"Use {nameof(EffectUnknown)} instead.")]
+    UnknownEffect = EffectUnknown,
     /// <summary>The effect was disabled.</summary>
     EffectDisabled = 0x1002,
     /// <summary>The effect has already failed.</summary>
