@@ -2,7 +2,6 @@
 using System;
 #endif
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json.Linq;
 
 namespace ConnectorLib.JSON;
 
