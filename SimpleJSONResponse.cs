@@ -100,6 +100,9 @@ public class SimpleJSONResponse : SimpleJSONMessage
                 case ResponseType.LoginSuccess:
                     response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
                     return true;
+                case ResponseType.Version:
+                    response = j.ToObject<VersionResponse>(JSON_SERIALIZER)!;
+                    return true;
                 case ResponseType.GameUpdate:
                     response = j.ToObject<GameUpdate>(JSON_SERIALIZER)!;
                     return true;

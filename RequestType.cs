@@ -49,10 +49,13 @@ public enum RequestType : byte
 
     /// <summary>Login information.</summary>
     Login = 0xF0,
-    
+
+    /// <summary>Request for the current version of the game mod.</summary>
+    Version = 0xFC,
+
     /// <summary>Request for updated game state information.</summary>
     GameUpdate = 0xFD,
-    
+
     /// <summary>Keep-alive message.</summary>
     KeepAlive = 0xFF
 }

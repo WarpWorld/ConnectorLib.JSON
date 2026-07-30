@@ -83,6 +83,9 @@ public class SimpleJSONRequest : SimpleJSONMessage
                 case RequestType.Login:
                     request = j.ToObject<MessageRequest>(JSON_SERIALIZER)!;
                     return true;
+                case RequestType.Version:
+                    request = j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
+                    return true;
                 case RequestType.GameUpdate:
                     request = j.ToObject<EmptyRequest>(JSON_SERIALIZER)!;
                     return true;

@@ -39,10 +39,13 @@ public enum ResponseType : byte
     
     /// <summary>Login success response.</summary>
     LoginSuccess = 0xF1,
-    
+
+    /// <summary>Response with the current version of the game mod.</summary>
+    Version = 0xFC,
+
     /// <summary>Game state information update.</summary>
     GameUpdate = 0xFD,
-    
+
     /// <summary>Disconnect with an optional message.</summary>
     Disconnect = 0xFE,
 
