@@ -28,7 +28,6 @@ public class VersionResponse : SimpleJSONResponse
     /// <summary>Creates a new instance of the <see cref="VersionResponse"/> class.</summary>
     /// <param name="id">The ID of the response.</param>
     /// <param name="version">The version number of the game mod.</param>
-    [JsonConstructor]
     public VersionResponse(uint id, VersionNumber version)
     {
         this.id = id;
