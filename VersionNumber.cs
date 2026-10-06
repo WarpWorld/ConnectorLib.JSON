@@ -149,11 +149,19 @@ public class VersionNumber : IEquatable<VersionNumber>, IComparable<VersionNumbe
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType().IsAssignableTo(typeof(VersionNumber))) return false;
-        return Equals((VersionNumber)obj);
+        return obj is VersionNumber other && Equals(other);
     }
 
-    public override int GetHashCode() => _version.GetHashCode();
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hash = 17;
+            foreach (uint component in _version)
+                hash = hash * 31 + component.GetHashCode();
+            return hash;
+        }
+    }
 
     public bool Equals(VersionNumber? other)
     {
