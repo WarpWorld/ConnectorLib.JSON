@@ -157,8 +157,11 @@ public class RequestParameters :
             foreach (var kv in j)
             {
                 string id = kv.Key;
-                string name = kv.Value["name"].Value<string>();
-                ParameterBase.ParameterType type = kv.Value["type"].Value<ParameterBase.ParameterType>();
+                string name = kv.Value["title"]?.Value<string>()
+                    ?? kv.Value["name"]?.Value<string>()
+                    ?? throw new JsonSerializationException($"Parameter '{id}' is missing its title.");
+                ParameterBase.ParameterType type = kv.Value["type"]?.ToObject<ParameterBase.ParameterType>(serializer)
+                    ?? throw new JsonSerializationException($"Parameter '{id}' is missing its type.");
                 switch (type)
                 {
                     case ParameterBase.ParameterType.Options:
