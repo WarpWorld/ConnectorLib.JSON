@@ -95,7 +95,7 @@ public class SimpleJSONResponse : SimpleJSONMessage
                     response = j.ToObject<DataResponse>(JSON_SERIALIZER)!;
                     return true;
                 case ResponseType.Login:
-                    response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
+                    response = j.ToObject<MessageResponse>(JSON_SERIALIZER)!;
                     return true;
                 case ResponseType.LoginSuccess:
                     response = j.ToObject<EmptyResponse>(JSON_SERIALIZER)!;
