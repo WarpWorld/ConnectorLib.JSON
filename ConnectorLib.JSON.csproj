@@ -102,6 +102,7 @@
 
   <ItemGroup>
     <Compile Remove="Protocol.Shared\**\*.cs" />
+    <Compile Remove="ConnectorLib.JSON.Tests\**\*.cs" />
   </ItemGroup>
 
   <Import Project="Protocol.Shared\Protocol.Shared.projitems" Label="Shared" />
