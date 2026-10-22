@@ -11,7 +11,7 @@ namespace ConnectorLib.JSON;
 [Serializable]
 #endif
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-public class EffectUpdate : SimpleJSONResponse
+public partial class EffectUpdate : SimpleJSONResponse
 {
     /// <summary>ID of the effect, if applicable.</summary>
     /// <remarks>
@@ -33,16 +33,6 @@ public class EffectUpdate : SimpleJSONResponse
     /// </summary>
     public IdentifierType idType;
 
-    /// <summary>The type of object this report pertains to.</summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    [JsonConverter(typeof(CamelCaseStringEnumConverter))]
-    public enum IdentifierType
-    {
-        Effect = 0,
-        Group = 1,
-        Category = 2
-    }
-    
     /// <summary>The status of the effect.</summary>
     public EffectStatus status;
 

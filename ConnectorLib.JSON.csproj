@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!--<TargetFrameworks>netstandard1.0;netstandard1.3;netstandard2.0;netstandard2.1;net35;net40;net45;net46;net471;net472;net5.0;net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>-->
     <TargetFrameworks>netstandard1.0;netstandard1.3;netstandard2.0;netstandard2.1;net35;net6.0;net8.0;net10.0</TargetFrameworks>
-    <DefineConstants>$(DefineConstants);NO_REFLECTION</DefineConstants>
+    <DefineConstants>$(DefineConstants);NO_REFLECTION;PROTOCOL_JSON</DefineConstants>
     <RootNamespace>ConnectorLib.JSON</RootNamespace>
     <AssemblyName>ConnectorLib.JSON</AssemblyName>
     <PlatformTarget>x64</PlatformTarget>
@@ -99,5 +99,11 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(SignAssembly)' == 'true'">
     <Exec Command="if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto sign_done&#xD;&#xA;if &quot;%25SIGNTOOL%25&quot;==&quot;&quot; set SIGNTOOL=$(SolutionDir)\Tools\signtool.exe&#xD;&#xA;if exist &quot;%25SIGNTOOL%25&quot; goto sign_ok&#xD;&#xA;    echo SignTool is missing. Please install the Windows 10 App Certification Kit.&#xD;&#xA;    exit -1&#xD;&#xA;:sign_ok&#xD;&#xA;&quot;%25SIGNTOOL%25&quot; sign /sha1 b50123b55f69786fb4018ee35dbe505aa7140f02 /fd SHA256 /tr http://timestamp.digicert.com /td sha256 &quot;$(TargetPath)&quot;&#xD;&#xA;:sign_done&#xD;&#xA;&#xD;&#xA;if not &quot;$(ConfigurationName)&quot;==&quot;Release&quot; goto clean_done&#xD;&#xA;del /q &quot;$(TargetDir)*.pdb&quot;&#xD;&#xA;:clean_done" />
   </Target>
+
+  <ItemGroup>
+    <Compile Remove="Protocol.Shared\**\*.cs" />
+  </ItemGroup>
+
+  <Import Project="Protocol.Shared\Protocol.Shared.projitems" Label="Shared" />
 
 </Project>

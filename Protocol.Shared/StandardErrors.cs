@@ -1,11 +1,23 @@
 ﻿using System;
+#if !PROTOCOL_JSON
+using CrowdControl.Common.Converters;
+#endif
 using Newtonsoft.Json;
 
-namespace ConnectorLib.JSON;
+#if PROTOCOL_JSON
+namespace ConnectorLib.JSON
+#else
+namespace CrowdControl.Common
+#endif
+{
 
 /// <summary>The standard set of errors that can occur in the Crowd Control system.</summary>
+#if PROTOCOL_JSON
 [JsonConverter(typeof(CamelCaseStringEnumConverter))]
-//remember to copy updates into CrowdControl.Games.StandardErrors
+#else
+[JsonConverter(typeof(CamelCaseStringEnumConverter<StandardErrors>))]
+#endif
+//Keep enum values aligned with CrowdControl.Games.StandardErrors.
 public enum StandardErrors
 {
     //General Errors
@@ -20,7 +32,7 @@ public enum StandardErrors
     /// <summary>The effect was not available.</summary>
     EffectUnknown = 0x1001,
     /// <summary>The effect was not available.</summary>
-    [Obsolete($"Use {nameof(EffectUnknown)} instead.")]
+    [Obsolete("Use EffectUnknown instead.")]
     UnknownEffect = EffectUnknown,
     /// <summary>The effect was disabled.</summary>
     EffectDisabled = 0x1002,
@@ -130,4 +142,5 @@ public enum StandardErrors
     ConflictingEffectRunning = 0x8000,
     /// <summary>This effect cannot be queued and another instance is already running.</summary>
     UnqueueablePending = 0x8001
+}
 }

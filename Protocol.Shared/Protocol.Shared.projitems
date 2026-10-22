@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kept with ConnectorLib.JSON so that project remains independently buildable. -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>DA65CE58-5C4A-4B6D-8D46-27AB0E6F2101</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Protocol.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)GameState.cs" Condition="'$(MSBuildProjectName)' == 'Protocol.Shared' Or '$(MSBuildProjectName)' == 'Common' Or '$(MSBuildProjectName)' == 'Common.Mini' Or '$(MSBuildProjectName)' == 'ConnectorLib.JSON' Or '$(MSBuildProjectName)' == 'Client.WebSocket'" />
+    <Compile Include="$(MSBuildThisFileDirectory)StandardErrors.cs" Condition="'$(MSBuildProjectName)' == 'Protocol.Shared' Or '$(MSBuildProjectName)' == 'Common' Or '$(MSBuildProjectName)' == 'Common.Mini' Or '$(MSBuildProjectName)' == 'ConnectorLib.JSON'" />
+    <Compile Include="$(MSBuildThisFileDirectory)RpcTarget.cs" Condition="'$(MSBuildProjectName)' == 'Protocol.Shared' Or '$(MSBuildProjectName)' == 'Common' Or '$(MSBuildProjectName)' == 'ConnectorLib.JSON'" />
+    <Compile Include="$(MSBuildThisFileDirectory)IdentifierType.cs" Condition="'$(MSBuildProjectName)' == 'Protocol.Shared' Or '$(MSBuildProjectName)' == 'Common' Or '$(MSBuildProjectName)' == 'Common.Mini' Or '$(MSBuildProjectName)' == 'ConnectorLib.JSON'" />
+    <Compile Include="$(MSBuildThisFileDirectory)VersionNumber.cs" Condition="'$(MSBuildProjectName)' == 'Protocol.Shared' Or '$(MSBuildProjectName)' == 'Common' Or '$(MSBuildProjectName)' == 'Common.Mini' Or '$(MSBuildProjectName)' == 'ConnectorLib.JSON'" />
+  </ItemGroup>
+</Project>
