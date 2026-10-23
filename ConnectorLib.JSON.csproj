@@ -82,8 +82,8 @@
 
   <PropertyGroup>
     <SignAssembly>false</SignAssembly> <!--change this to false if you don't have a certificate-->
-    <AssemblyOriginatorKeyFile>..\Certificates\WarpWorld_Code.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>false</DelaySign>
+    <!-- <AssemblyOriginatorKeyFile>..\Certificates\WarpWorld_Code.snk</AssemblyOriginatorKeyFile> -->
+    <!-- <DelaySign>false</DelaySign> -->
   </PropertyGroup>
 
   <PropertyGroup>
