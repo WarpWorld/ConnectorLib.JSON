@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace ConnectorLib.JSON;
 
@@ -67,24 +67,16 @@ internal static class StringEx
     /// <param name="value">The string to chop.</param>
     /// <param name="chopLength">The length of each segment.</param>
     /// <returns>An array of strings, each containing a segment of the original string.</returns>
-    internal static unsafe string[] Chop(this string value, int chopLength)
+    // Probably Stolen pack: rewritten from the upstream unsafe stackalloc version. The game's mod
+    // scanner treats any pointer/unsafe IL as the "native" capability (StringEx.Chop -> pointer local
+    // refused activation), and ConnectorLib.JSON otherwise never needs native access. Managed-only.
+    internal static string[] Chop(this string value, int chopLength)
     {
         int len = value.Length;
-        char* segment = stackalloc char[chopLength];
-        string[] result = new string[len];
-        for (int i = 0; i < len; i += chopLength)
-        {
-            int j = 0;
-            for (; j < chopLength; j++)
-            {
-                int next = i + j;
-                if (next >= len) break;
-                segment[j] = value[next];
-            }
-
-            result[i / chopLength] = new string(segment, 0, j);
-        }
-
+        int count = (len + chopLength - 1) / chopLength;
+        string[] result = new string[count];
+        for (int i = 0; i < count; i++)
+            result[i] = value.Substring(i * chopLength, Math.Min(chopLength, len - i * chopLength));
         return result;
     }
 }
